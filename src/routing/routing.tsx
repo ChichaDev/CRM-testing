@@ -5,10 +5,11 @@ import {
 } from "react-router-dom";
 import { Root } from "../pages/Root";
 import { HomePage } from "../pages/HomePage";
-import { Login } from "../pages/Login";
-import { Signup } from "../pages/Signup";
+
 import { ProtectedRoute } from "./hoc/ProtectedRoute";
 import { Profile } from "../pages/Profile";
+import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,9 +32,9 @@ export const router = createBrowserRouter(
         }
       />
 
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<LoginPage />} />
 
-      <Route path="/signup" element={<Signup />} />
+      <Route path="/signup" element={<RegisterPage />} />
     </Route>
   )
 );
