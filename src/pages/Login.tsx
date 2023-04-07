@@ -2,6 +2,9 @@ import { useRef } from "react";
 import { Form, Button, Card, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
+import { FacebookLoginButton } from "react-social-login-buttons";
+import { GoogleLoginButton } from "react-social-login-buttons";
+
 export const Login = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -31,6 +34,20 @@ export const Login = () => {
               </Button>
             </Form>
           </Card.Body>
+          <div className="d-flex align-items-center justify-content-center">
+            <GoogleLoginButton
+              onClick={() => console.log("Hello")}
+              style={{ maxWidth: "240px" }}
+            />
+          </div>
+
+          <div className="d-flex align-items-center justify-content-center">
+            <FacebookLoginButton
+              onClick={() => console.log("Hello")}
+              style={{ maxWidth: "240px" }}
+            />
+          </div>
+
           <div className="w-100 text-center mt-2">
             Need an account? <Link to="/signup">Sign Up</Link>
           </div>

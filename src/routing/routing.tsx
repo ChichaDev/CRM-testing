@@ -8,6 +8,7 @@ import { HomePage } from "../pages/HomePage";
 import { Login } from "../pages/Login";
 import { Signup } from "../pages/Signup";
 import { ProtectedRoute } from "./hoc/ProtectedRoute";
+import { Profile } from "../pages/Profile";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,7 +21,18 @@ export const router = createBrowserRouter(
           </ProtectedRoute>
         }
       />
+
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute redirectPath="/login">
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
+
       <Route path="/login" element={<Login />} />
+
       <Route path="/signup" element={<Signup />} />
     </Route>
   )
