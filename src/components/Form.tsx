@@ -7,16 +7,20 @@ import { GoogleLoginButton } from "react-social-login-buttons";
 
 type FormProps = {
   title: string;
-  onClick: () => void;
+  handleClick: (email: string, password: string) => void;
 };
 
-export const Form = ({ title, onClick }: FormProps) => {
-  const [telephone, setTelephone] = useState<string | undefined>("");
-  const [email, setEmail] = useState<string | undefined>("");
-  const [password, setPassword] = useState<string | undefined>("");
-  const [passwordConfirm, setPasswordConfirm] = useState<string | undefined>(
-    ""
-  );
+export const Form = ({ title, handleClick }: FormProps) => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    await handleClick(email, password);
+    setLoading(false);
+  };
 
   return (
     <Container
@@ -27,17 +31,7 @@ export const Form = ({ title, onClick }: FormProps) => {
         <Card>
           <Card.Body>
             <h2 className="text-center mb-4">{title}</h2>
-            <Forms>
-              <Forms.Group id="telephone">
-                <Forms.Label>Mobile</Forms.Label>
-                <Forms.Control
-                  value={telephone}
-                  onChange={(e) => setTelephone(e.target.value)}
-                  type="number"
-                  required
-                />
-              </Forms.Group>
-
+            <Forms onSubmit={handleSubmit}>
               <Forms.Group id="email">
                 <Forms.Label>Email</Forms.Label>
                 <Forms.Control
@@ -57,20 +51,9 @@ export const Form = ({ title, onClick }: FormProps) => {
                   required
                 />
               </Forms.Group>
-              {title === "Sign Up" && (
-                <Forms.Group id="password-confirm">
-                  <Forms.Label>Password Confirmation</Forms.Label>
-                  <Forms.Control
-                    value={passwordConfirm}
-                    onChange={(e) => setPasswordConfirm(e.target.value)}
-                    type="password"
-                    required
-                  />
-                </Forms.Group>
-              )}
 
-              <Button onClick={onClick} className="w-100 mt-4" type="submit">
-                {title}
+              <Button disabled={loading} className="w-100 mt-4" type="submit">
+                {loading ? "Loading..." : title}
               </Button>
             </Forms>
           </Card.Body>
