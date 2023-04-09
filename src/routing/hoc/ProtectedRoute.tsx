@@ -1,4 +1,6 @@
 import { Navigate, useLocation } from "react-router-dom";
+import { useAppSelector } from "../../store/redux-hook";
+import { getIsLoggedInStatus } from "../../store/user/selector";
 
 type ProtectedRouteProps = {
   redirectPath: string;
@@ -8,11 +10,11 @@ type ProtectedRouteProps = {
 export const ProtectedRoute = (props: ProtectedRouteProps) => {
   const { redirectPath, children } = props;
 
-  const isLoggedIn = false;
+  const logged = useAppSelector(getIsLoggedInStatus);
 
   const location = useLocation();
 
-  if (!isLoggedIn) {
+  if (!logged) {
     return <Navigate to={redirectPath} state={{ from: location }} />;
   }
 

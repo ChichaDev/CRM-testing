@@ -10,6 +10,7 @@ import { ProtectedRoute } from "./hoc/ProtectedRoute";
 import { Profile } from "../pages/Profile";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
+import { EditUsersPage } from "../pages/EditUsersPage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,6 +29,15 @@ export const router = createBrowserRouter(
         element={
           <ProtectedRoute redirectPath="/login">
             <Profile />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/edituser"
+        element={
+          <ProtectedRoute redirectPath="/login">
+            <EditUsersPage />
           </ProtectedRoute>
         }
       />

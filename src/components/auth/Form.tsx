@@ -1,9 +1,18 @@
+import {
+  FacebookAuthProvider,
+  RecaptchaVerifier,
+  getAuth,
+  signInWithPhoneNumber,
+  signInWithPopup,
+} from "firebase/auth";
 import { useState } from "react";
 import { Form as Forms, Button, Card, Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { FacebookLoginButton } from "react-social-login-buttons";
 import { GoogleLoginButton } from "react-social-login-buttons";
+
+import { useGoogleSignIn } from "./useGoogleSignIn";
 
 type FormProps = {
   title: string;
@@ -11,6 +20,10 @@ type FormProps = {
 };
 
 export const Form = ({ title, handleClick }: FormProps) => {
+  const navigate = useNavigate();
+
+  const handleGoogleSignIn = useGoogleSignIn();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -19,7 +32,12 @@ export const Form = ({ title, handleClick }: FormProps) => {
     e.preventDefault();
     setLoading(true);
     await handleClick(email, password);
+    navigate("/profile");
     setLoading(false);
+  };
+
+  const handleClickGoogle = () => {
+    handleGoogleSignIn(navigate);
   };
 
   return (
@@ -58,11 +76,27 @@ export const Form = ({ title, handleClick }: FormProps) => {
             </Forms>
           </Card.Body>
           <div className="d-flex align-items-center justify-content-center">
-            <GoogleLoginButton style={{ maxWidth: "240px" }} />
+            <GoogleLoginButton
+              style={{ maxWidth: "240px" }}
+              onClick={handleClickGoogle}
+            />
           </div>
 
           <div className="d-flex align-items-center justify-content-center">
-            <FacebookLoginButton style={{ maxWidth: "240px" }} />
+            <FacebookLoginButton
+              style={{ maxWidth: "240px" }}
+              // onClick={registerWithFacebook}
+            />
+          </div>
+
+          <div className="d-flex align-items-center justify-content-center">
+            <Button
+              // onClick={registerWithPhone}
+              style={{ width: "240px", height: "45px" }}
+              variant="info"
+            >
+              Sign In with mobile number
+            </Button>
           </div>
 
           {title === "Sign In" ? (
