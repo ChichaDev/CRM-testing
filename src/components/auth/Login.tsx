@@ -16,6 +16,7 @@ const Login = () => {
         email,
         password
       );
+
       const user = userCredential.user;
 
       console.log(`Пользователь ${user.uid} успешно вошел`);

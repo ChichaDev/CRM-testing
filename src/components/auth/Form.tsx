@@ -1,10 +1,3 @@
-import {
-  FacebookAuthProvider,
-  RecaptchaVerifier,
-  getAuth,
-  signInWithPhoneNumber,
-  signInWithPopup,
-} from "firebase/auth";
 import { useState } from "react";
 import { Form as Forms, Button, Card, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,6 +6,7 @@ import { FacebookLoginButton } from "react-social-login-buttons";
 import { GoogleLoginButton } from "react-social-login-buttons";
 
 import { useGoogleSignIn } from "./useGoogleSignIn";
+import { useFacebookSignIn } from "./useFacebookSignIn";
 
 type FormProps = {
   title: string;
@@ -20,24 +14,32 @@ type FormProps = {
 };
 
 export const Form = ({ title, handleClick }: FormProps) => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
   const navigate = useNavigate();
 
   const handleGoogleSignIn = useGoogleSignIn();
 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+  const handleClickGoogle = async () => {
+    await handleGoogleSignIn();
+    navigate("/profile");
+  };
+
+  const handleFacebookSignIn = useFacebookSignIn();
+
+  const handleClickFacebook = async () => {
+    await handleFacebookSignIn();
+    navigate("/profile");
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     await handleClick(email, password);
-    navigate("/profile");
     setLoading(false);
-  };
-
-  const handleClickGoogle = () => {
-    handleGoogleSignIn(navigate);
+    navigate("/profile");
   };
 
   return (
@@ -85,7 +87,7 @@ export const Form = ({ title, handleClick }: FormProps) => {
           <div className="d-flex align-items-center justify-content-center">
             <FacebookLoginButton
               style={{ maxWidth: "240px" }}
-              // onClick={registerWithFacebook}
+              onClick={handleClickFacebook}
             />
           </div>
 

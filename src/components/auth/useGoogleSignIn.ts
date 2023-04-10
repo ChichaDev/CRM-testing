@@ -12,7 +12,7 @@ export const useGoogleSignIn = () => {
 
   const googleProvider = new GoogleAuthProvider();
 
-  const handleGoogleSignIn = async (navigate: (arg0: string) => void) => {
+  const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
 
@@ -38,8 +38,6 @@ export const useGoogleSignIn = () => {
           isLoggedIn: true,
         })
       );
-
-      navigate("/profile");
 
       return user;
     } catch (error) {

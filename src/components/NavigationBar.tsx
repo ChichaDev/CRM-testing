@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { useAppDispatch } from "../store/redux-hook";
 import { removeUser } from "../store/user/slice";
 
@@ -9,14 +9,10 @@ const Navigation = () => {
 
   const dispatch = useAppDispatch();
 
-  const navigate = useNavigate();
-
   const logoutUser = () => {
     dispatch(removeUser());
 
     localStorage.removeItem("currentUser");
-
-    navigate("/login");
   };
 
   return (

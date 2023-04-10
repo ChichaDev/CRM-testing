@@ -1,10 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
-import getFromLocalStorage from "../../utils/getFromLocalStorege";
+import getFromLocalStorage, {
+  DeserializedValue,
+} from "../../utils/getFromLocalStorege";
 
-const initialState = {
-  email: null,
-  token: null,
-  id: null,
+type UserAuth = {
+  email: string;
+  token: string;
+  id: string;
+  isLoggedIn: DeserializedValue;
+};
+
+const initialState: UserAuth = {
+  email: "",
+  token: "",
+  id: "",
   isLoggedIn: getFromLocalStorage("currentUser", false),
 };
 console.log("initialstate", initialState);
@@ -17,11 +26,13 @@ const userSlice = createSlice({
       state.email = action.payload.email;
       state.token = action.payload.token;
       state.id = action.payload.id;
+      state.isLoggedIn = action.payload;
     },
     removeUser(state) {
-      state.email = null;
-      state.token = null;
-      state.id = null;
+      state.email = "";
+      state.token = "";
+      state.id = "";
+      state.isLoggedIn = false;
     },
   },
 });

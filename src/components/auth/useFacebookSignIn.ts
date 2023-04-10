@@ -1,25 +1,29 @@
-// вход через FACEBOOK
-const registerWithFacebook = async () => {
-  const auth = getAuth();
+import { FacebookAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
-  const facebookProvider = new FacebookAuthProvider();
+export const useFacebookSignIn = () => {
+  const registerWithFacebook = async () => {
+    const auth = getAuth();
 
-  try {
-    const result = await signInWithPopup(auth, facebookProvider);
+    const facebookProvider = new FacebookAuthProvider();
 
-    const user = result.user;
-    console.log(user.uid + "был зарегестрирован через FACEBOOK");
+    try {
+      const result = await signInWithPopup(auth, facebookProvider);
 
-    return user;
-  } catch (error) {
-    if (error === "auth/popup-closed-by-user") {
-      alert(
-        "Вы закрыли окно авторизации. Пожалуйста, повторите попытку авторизации."
-      );
-    } else {
-      alert(
-        "Произошла ошибка авторизации. Пожалуйста, попробуйте еще раз позже."
-      );
+      const user = result.user;
+      console.log(user.uid + "был зарегестрирован через FACEBOOK");
+
+      return user;
+    } catch (error) {
+      if (error === "auth/popup-closed-by-user") {
+        alert(
+          "Вы закрыли окно авторизации. Пожалуйста, повторите попытку авторизации."
+        );
+      } else {
+        alert(
+          "Произошла ошибка авторизации. Пожалуйста, попробуйте еще раз позже."
+        );
+      }
     }
-  }
+  };
+  return registerWithFacebook;
 };
