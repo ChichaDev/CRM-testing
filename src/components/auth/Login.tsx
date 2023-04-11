@@ -1,18 +1,16 @@
 import { Form } from "./Form";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAppDispatch } from "../../store/redux-hook";
 import { setUser } from "../../store/user/slice";
+import { authentication } from "../../../firebase";
 
 const Login = () => {
   const dispatch = useAppDispatch();
 
   const handleLogin = async (email: string, password: string) => {
-    const auth = getAuth();
-
     try {
       const userCredential = await signInWithEmailAndPassword(
-        auth,
+        authentication,
         email,
         password
       );

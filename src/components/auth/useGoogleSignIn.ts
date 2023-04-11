@@ -1,20 +1,17 @@
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useAppDispatch } from "../../store/redux-hook";
 import { setUser } from "../../store/user/slice";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
+import { authentication, db } from "../../../firebase";
 
 export const useGoogleSignIn = () => {
   const dispatch = useAppDispatch();
 
-  const auth = getAuth();
-
-  const firestore = getFirestore();
-
-  const googleProvider = new GoogleAuthProvider();
-
   const handleGoogleSignIn = async () => {
     try {
-      const result = await signInWithPopup(auth, googleProvider);
+      const provider = new GoogleAuthProvider();
+
+      const result = await signInWithPopup(authentication, provider);
 
       const user = result.user;
 
@@ -22,7 +19,7 @@ export const useGoogleSignIn = () => {
 
       localStorage.setItem("currentUser", JSON.stringify(user.refreshToken));
 
-      const userRef = doc(firestore, "users", user.uid);
+      const userRef = doc(db, "users", user.uid);
 
       await setDoc(userRef, {
         email: user.email,

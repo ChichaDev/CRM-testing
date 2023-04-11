@@ -2,20 +2,17 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/redux-hook";
 import { setUser } from "../../store/user/slice";
 import { Form } from "./Form";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { authentication, db } from "../../../firebase";
 
 const SignUp = () => {
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
-  const firestore = getFirestore();
-
   const handleRegister = async (email: string, password: string) => {
-    const auth = getAuth();
-
-    await createUserWithEmailAndPassword(auth, email, password)
+    await createUserWithEmailAndPassword(authentication, email, password)
       .then(async (userCredential) => {
         const user = userCredential.user;
 
@@ -23,7 +20,7 @@ const SignUp = () => {
 
         localStorage.setItem("currentUser", JSON.stringify(user.refreshToken));
 
-        const userRef = doc(firestore, "users", user.uid);
+        const userRef = doc(db, "users", user.uid);
 
         await setDoc(userRef, {
           email: user.email,

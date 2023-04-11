@@ -27,10 +27,10 @@ export const Form = ({ title, handleClick }: FormProps) => {
     navigate("/profile");
   };
 
-  const handleFacebookSignIn = useFacebookSignIn();
+  const registerWithFacebook = useFacebookSignIn();
 
   const handleClickFacebook = async () => {
-    await handleFacebookSignIn();
+    await registerWithFacebook();
     navigate("/profile");
   };
 

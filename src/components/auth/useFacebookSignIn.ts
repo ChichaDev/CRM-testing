@@ -1,29 +1,28 @@
-import { FacebookAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { FacebookAuthProvider, signInWithPopup } from "firebase/auth";
+import { authentication } from "../../../firebase";
 
 export const useFacebookSignIn = () => {
   const registerWithFacebook = async () => {
-    const auth = getAuth();
+    const provider = new FacebookAuthProvider();
 
-    const facebookProvider = new FacebookAuthProvider();
-
-    try {
-      const result = await signInWithPopup(auth, facebookProvider);
-
-      const user = result.user;
-      console.log(user.uid + "был зарегестрирован через FACEBOOK");
-
-      return user;
-    } catch (error) {
-      if (error === "auth/popup-closed-by-user") {
-        alert(
-          "Вы закрыли окно авторизации. Пожалуйста, повторите попытку авторизации."
-        );
-      } else {
-        alert(
-          "Произошла ошибка авторизации. Пожалуйста, попробуйте еще раз позже."
-        );
-      }
-    }
+    signInWithPopup(authentication, provider)
+      .then((result) => {
+        console.log(result.user.uid + "зарегистрирован");
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
   return registerWithFacebook;
 };
+
+// const credential = FacebookAuthProvider.credentialFromResult(result);
+// const accessToken = credential?.accessToken;
+
+// fetch(
+//   `https://graph.facebook.com/${result.user.providerData[0].uid}/picture?type=large&access_token=${accessToken}`
+// )
+//   .then((response) => response.blob())
+//   .then((blob) => {
+//     console.log("create profile photo FB", URL.createObjectURL(blob));
+//   });
