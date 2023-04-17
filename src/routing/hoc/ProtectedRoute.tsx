@@ -10,11 +10,11 @@ type ProtectedRouteProps = {
 export const ProtectedRoute = (props: ProtectedRouteProps) => {
   const { redirectPath, children } = props;
 
-  const logged = useAppSelector(getIsLoggedInStatus);
+  const token = useAppSelector(getIsLoggedInStatus);
 
   const location = useLocation();
 
-  if (!logged) {
+  if (!token) {
     return <Navigate to={redirectPath} state={{ from: location }} />;
   }
 

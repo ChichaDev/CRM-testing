@@ -19,13 +19,10 @@ const Login = () => {
 
       console.log(`Пользователь ${user.uid} успешно вошел`);
 
-      localStorage.setItem("currentUser", JSON.stringify(user.refreshToken));
+      localStorage.setItem("refreshToken", JSON.stringify(user.refreshToken));
 
       dispatch(
         setUser({
-          email: user.email,
-          id: user.uid,
-          token: user.refreshToken,
           isLoggedIn: true,
         })
       );

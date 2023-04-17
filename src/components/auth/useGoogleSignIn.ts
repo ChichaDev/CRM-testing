@@ -14,10 +14,11 @@ export const useGoogleSignIn = () => {
       const result = await signInWithPopup(authentication, provider);
 
       const user = result.user;
+      const tokenUser = await user.getIdToken();
 
       console.log(user.uid + "выполнил вход через GOOGLE");
 
-      localStorage.setItem("currentUser", JSON.stringify(user.refreshToken));
+      localStorage.setItem("accessToken ", JSON.stringify(tokenUser));
 
       const userRef = doc(db, "users", user.uid);
 
@@ -29,9 +30,6 @@ export const useGoogleSignIn = () => {
 
       dispatch(
         setUser({
-          email: user.email,
-          id: user.uid,
-          token: user.refreshToken,
           isLoggedIn: true,
         })
       );

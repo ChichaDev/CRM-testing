@@ -8,6 +8,8 @@ import { GoogleLoginButton } from "react-social-login-buttons";
 import { useGoogleSignIn } from "./useGoogleSignIn";
 import { useFacebookSignIn } from "./useFacebookSignIn";
 
+import PhoneSVG from "../../assets/mobile.svg";
+
 type FormProps = {
   title: string;
   handleClick: (email: string, password: string) => void;
@@ -24,14 +26,14 @@ export const Form = ({ title, handleClick }: FormProps) => {
 
   const handleClickGoogle = async () => {
     await handleGoogleSignIn();
-    navigate("/profile");
+    navigate("/tripspage");
   };
 
   const registerWithFacebook = useFacebookSignIn();
 
   const handleClickFacebook = async () => {
     await registerWithFacebook();
-    navigate("/profile");
+    navigate("/tripspage");
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -39,7 +41,7 @@ export const Form = ({ title, handleClick }: FormProps) => {
     setLoading(true);
     await handleClick(email, password);
     setLoading(false);
-    navigate("/profile");
+    navigate("/tripspage");
   };
 
   return (
@@ -92,13 +94,24 @@ export const Form = ({ title, handleClick }: FormProps) => {
           </div>
 
           <div className="d-flex align-items-center justify-content-center">
-            <Button
-              // onClick={registerWithPhone}
-              style={{ width: "240px", height: "45px" }}
-              variant="info"
-            >
-              Sign In with mobile number
-            </Button>
+            <Link to={"/phoneauth"} style={{ textDecoration: "none" }}>
+              <Button
+                className="d-flex align-items-center justify-content-space-between"
+                style={{
+                  width: "240px",
+                  height: "45px",
+                  fontSize: "18px",
+                }}
+                variant="info"
+              >
+                <img
+                  src={PhoneSVG}
+                  alt="phone login"
+                  style={{ width: "30px", height: "30px" }}
+                />
+                Log In with mobile
+              </Button>
+            </Link>
           </div>
 
           {title === "Sign In" ? (

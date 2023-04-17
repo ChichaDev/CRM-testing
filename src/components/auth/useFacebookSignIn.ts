@@ -1,14 +1,39 @@
 import { FacebookAuthProvider, signInWithPopup } from "firebase/auth";
-import { authentication } from "../../../firebase";
+import { authentication, db } from "../../../firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { useAppDispatch } from "../../store/redux-hook";
+import { setUser } from "../../store/user/slice";
 
 export const useFacebookSignIn = () => {
+  const dispatch = useAppDispatch();
+
   const registerWithFacebook = async () => {
     const provider = new FacebookAuthProvider();
 
     signInWithPopup(authentication, provider)
-      .then((result) => {
-        console.log(result.user.uid + "зарегистрирован");
+      .then((credential) => {
+        console.log(credential.user.uid + "зарегистрирован");
+
+        localStorage.setItem(
+          "refreshToken",
+          JSON.stringify(credential.user.refreshToken)
+        );
+
+        const userRef = doc(db, "users", credential.user.uid);
+
+        setDoc(userRef, {
+          email: credential.user.email,
+          displayName: credential.user.displayName || "user",
+          uid: credential.user.uid,
+        });
+
+        dispatch(
+          setUser({
+            isLoggedIn: true,
+          })
+        );
       })
+
       .catch((err) => {
         console.log(err.message);
       });

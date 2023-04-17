@@ -3,7 +3,7 @@ import NavigationBar from "./NavigationBar";
 
 export const Header = () => {
   return (
-    <Container fluid>
+    <Container fluid style={{ position: "relative" }}>
       <NavigationBar />
     </Container>
   );

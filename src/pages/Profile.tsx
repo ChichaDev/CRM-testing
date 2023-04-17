@@ -1,3 +1,5 @@
+import ProfileCard from "../components/profile/ProfileCard";
+
 export const Profile = () => {
-  return <div>Profile User/Admin/Driver</div>;
+  return <ProfileCard />;
 };

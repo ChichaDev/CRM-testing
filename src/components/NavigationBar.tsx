@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, NavLink, To, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../store/redux-hook";
 import { removeUser } from "../store/user/slice";
 
@@ -12,7 +12,14 @@ const Navigation = () => {
   const logoutUser = () => {
     dispatch(removeUser());
 
-    localStorage.removeItem("currentUser");
+    localStorage.removeItem("refreshToken");
+  };
+
+  const navigate = useNavigate();
+
+  const handleLinkClick = (path: To) => {
+    setExpanded(false);
+    navigate(path);
   };
 
   return (
@@ -22,18 +29,37 @@ const Navigation = () => {
           aria-controls="basic-navbar-nav"
           onClick={() => setExpanded(!expanded)}
         />
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Collapse
+          style={{
+            position: "absolute",
+            top: "100%",
+            right: 0,
+            left: 0,
+            backgroundColor: "white",
+            zIndex: "1000",
+          }}
+          id="basic-navbar-nav"
+        >
           <Nav className="mr-auto">
-            <NavDropdown.Item style={{ height: "3rem", width: "100px" }}>
-              <Link to={"/profile"}>Profile</Link>
+            <NavDropdown.Item
+              onClick={() => handleLinkClick("/profile")}
+              style={{ height: "3rem", width: "100px" }}
+            >
+              <NavLink to={"/profile"}>Profile</NavLink>
             </NavDropdown.Item>
 
-            <NavDropdown.Item style={{ height: "3rem", width: "100px" }}>
-              <Link to={"/homepage"}>HomePage</Link>
+            <NavDropdown.Item
+              onClick={() => handleLinkClick("/tripspage")}
+              style={{ height: "3rem", width: "100px" }}
+            >
+              <NavLink to={"/tripspage"}>Trips</NavLink>
             </NavDropdown.Item>
 
-            <NavDropdown.Item style={{ height: "3rem", width: "100px" }}>
-              <Link to={"/edituser"}>Edit Users</Link>
+            <NavDropdown.Item
+              onClick={() => handleLinkClick("/edituser")}
+              style={{ height: "3rem", width: "100px" }}
+            >
+              <NavLink to={"/edituser"}>Edit Users</NavLink>
             </NavDropdown.Item>
 
             <NavDropdown.Divider style={{ width: "100px" }} />
@@ -52,3 +78,57 @@ const Navigation = () => {
 };
 
 export default Navigation;
+
+// return (
+//   <>
+//     <Navbar expand="xxl" expanded={expanded}>
+//       <Navbar.Toggle
+//         aria-controls="basic-navbar-nav"
+//         onClick={() => setExpanded(!expanded)}
+//       />
+//       <Navbar.Collapse
+//         style={{
+//           position: "absolute",
+//           top: "100%",
+//           right: 0,
+//           left: 0,
+//           backgroundColor: "white",
+//           zIndex: "1000",
+//         }}
+//         id="basic-navbar-nav"
+//       >
+//         <Nav className="mr-auto">
+//           <NavDropdown.Item
+//             onClick={() => setExpanded(false)}
+//             style={{ height: "3rem", width: "100px" }}
+//           >
+//             <Link to={"/profile"}>Profile</Link>
+//           </NavDropdown.Item>
+
+//           <NavDropdown.Item
+//             onClick={() => setExpanded(false)}
+//             style={{ height: "3rem", width: "100px" }}
+//           >
+//             <Link to={"/tripspage"}>Trips</Link>
+//           </NavDropdown.Item>
+
+//           <NavDropdown.Item
+//             onClick={() => setExpanded(false)}
+//             style={{ height: "3rem", width: "100px" }}
+//           >
+//             <Link to={"/edituser"}>Edit Users</Link>
+//           </NavDropdown.Item>
+
+//           <NavDropdown.Divider style={{ width: "100px" }} />
+
+//           <NavDropdown.Item
+//             onClick={logoutUser}
+//             style={{ height: "3rem", width: "100px" }}
+//           >
+//             Logout
+//           </NavDropdown.Item>
+//         </Nav>
+//       </Navbar.Collapse>
+//     </Navbar>
+//   </>
+// );

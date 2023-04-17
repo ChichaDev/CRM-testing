@@ -18,7 +18,7 @@ const SignUp = () => {
 
         console.log(`Пользователь ${user.uid} успешно зарегистрирован`);
 
-        localStorage.setItem("currentUser", JSON.stringify(user.refreshToken));
+        localStorage.setItem("refreshToken", JSON.stringify(user.refreshToken));
 
         const userRef = doc(db, "users", user.uid);
 
@@ -30,14 +30,11 @@ const SignUp = () => {
 
         dispatch(
           setUser({
-            email: user.email,
-            id: user.uid,
-            token: user.refreshToken,
             isLoggedIn: true,
           })
         );
 
-        navigate("/profile");
+        navigate("/tripspage");
       })
 
       .catch((error) => {

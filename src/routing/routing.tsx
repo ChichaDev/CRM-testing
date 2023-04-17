@@ -4,22 +4,24 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import { Root } from "../pages/Root";
-import { HomePage } from "../pages/HomePage";
+import { TripsPage } from "../pages/TripsPage";
 
 import { ProtectedRoute } from "./hoc/ProtectedRoute";
 import { Profile } from "../pages/Profile";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import { EditUsersPage } from "../pages/EditUsersPage";
+import { PhoneAuthPage } from "../pages/PhoneAuthPage";
+import { ErrorPage } from "../pages/ErrorPage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<Root />}>
       <Route
-        path="/homepage"
+        path="/tripspage"
         element={
           <ProtectedRoute redirectPath="/login">
-            <HomePage />
+            <TripsPage />
           </ProtectedRoute>
         }
       />
@@ -45,6 +47,17 @@ export const router = createBrowserRouter(
       <Route path="/login" element={<LoginPage />} />
 
       <Route path="/signup" element={<RegisterPage />} />
+
+      <Route path="/phoneauth" element={<PhoneAuthPage />} />
+
+      <Route
+        path="*"
+        element={
+          <ProtectedRoute redirectPath="/login">
+            <ErrorPage />
+          </ProtectedRoute>
+        }
+      />
     </Route>
   )
 );

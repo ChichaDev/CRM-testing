@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
+    "@types/moment": "^2.13.0",
     "@types/react-redux": "^7.1.25",
     "bootstrap": "^4.6.2",
     "firebase": "^9.19.1",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.2",
     "react-dom": "^18.2.0",

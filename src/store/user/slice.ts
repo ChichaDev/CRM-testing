@@ -4,17 +4,19 @@ import getFromLocalStorage, {
 } from "../../utils/getFromLocalStorege";
 
 type UserAuth = {
-  email: string;
-  token: string;
+  email?: string;
+  phoneNumber?: string;
   id: string;
+  displayName: string;
   isLoggedIn: DeserializedValue;
 };
 
 const initialState: UserAuth = {
   email: "",
-  token: "",
   id: "",
-  isLoggedIn: getFromLocalStorage("currentUser", false),
+  phoneNumber: "",
+  displayName: "",
+  isLoggedIn: getFromLocalStorage("refreshToken", false),
 };
 console.log("initialstate", initialState);
 
@@ -23,15 +25,9 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser(state, action) {
-      state.email = action.payload.email;
-      state.token = action.payload.token;
-      state.id = action.payload.id;
       state.isLoggedIn = action.payload;
     },
     removeUser(state) {
-      state.email = "";
-      state.token = "";
-      state.id = "";
       state.isLoggedIn = false;
     },
   },
