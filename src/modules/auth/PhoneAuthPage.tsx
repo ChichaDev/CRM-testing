@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import { PhoneAuthForm } from "../components/auth/PhoneAuthForm";
+import { PhoneAuthForm } from "./PhoneAuthForm";
 
 export const PhoneAuthPage = () => {
   return (

@@ -38,17 +38,4 @@ export const ProfileCard = () => {
       </Card>
     </div>
   );
-  // return (
-  //   <div>
-  //     <div>
-  //       <h2>Welcome, {displayName}!</h2>
-  //       <p>Your email is {email}.</p>
-  //       <div>
-  //         <img src={avatar} alt="Photo User" />
-  //       </div>
-
-  //       <h2>{phoneNumber || "not number"}</h2>
-  //     </div>
-  //   </div>
-  // );
 };

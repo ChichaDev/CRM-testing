@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
-import AddTripForm from "./AddTripForm";
+import AddTripForm from "../dispatcher/AddTripForm";
 import { Trips, fetchTripsAsync } from "../../store/trips/slice";
 import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
 import { deleteTrip } from "../../store/trips/actions";
-import {
-  Card,
-  Col,
-  Dropdown,
-  DropdownButton,
-  Form,
-  ListGroup,
-  Row,
-} from "react-bootstrap";
+import { Dropdown, DropdownButton } from "react-bootstrap";
 import { getDrivers } from "../../store/drivers/selector";
 import { fetchDrivers } from "../../store/drivers/action";
 import { authentication, db } from "../../../firebase";
@@ -25,7 +17,7 @@ type Props = {
   trips: Trips[];
 };
 
-const TripsTable: React.FC<Props> = ({ trips }) => {
+export const AdminTable: React.FC<Props> = ({ trips }) => {
   const [selectedDriver, setSelectedDriver] = useState<string>("");
   const [isAddTripFormOpen, setIsAddTripFormOpen] = useState(false);
 
@@ -294,5 +286,3 @@ const TripsTable: React.FC<Props> = ({ trips }) => {
     </>
   );
 };
-
-export default TripsTable;

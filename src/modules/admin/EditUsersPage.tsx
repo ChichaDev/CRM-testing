@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import UserList from "../components/users/UserList";
+import UserList from "./UserList";
 
 export const EditUsersPage = () => {
   return (

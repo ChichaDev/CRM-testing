@@ -2,8 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { deleteTrip, fetchTrips } from "./actions";
 import { AppDispatch } from "../store";
 
-import moment from "moment";
-
 export type Trips = {
   id: string;
   driver?: string;

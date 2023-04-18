@@ -3,25 +3,35 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import { Root } from "../pages/Root";
-import { TripsPage } from "../pages/TripsPage";
+import { Root } from "./Root";
+import { AdminPage } from "../modules/admin/AdminPage";
 
 import { ProtectedRoute } from "./hoc/ProtectedRoute";
 import { Profile } from "../pages/Profile";
-import LoginPage from "../pages/LoginPage";
-import RegisterPage from "../pages/RegisterPage";
-import { EditUsersPage } from "../pages/EditUsersPage";
-import { PhoneAuthPage } from "../pages/PhoneAuthPage";
+import LoginPage from "../modules/auth/LoginPage";
+import RegisterPage from "../modules/auth/RegisterPage";
+import { EditUsersPage } from "../modules/admin/EditUsersPage";
+import { PhoneAuthPage } from "../modules/auth/PhoneAuthPage";
 import { ErrorPage } from "../pages/ErrorPage";
+import { DriverCalendar } from "../modules/driver/DriverCalendar";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<Root />}>
       <Route
+        path="/calendar"
+        element={
+          <ProtectedRoute redirectPath="/login">
+            <DriverCalendar />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
         path="/tripspage"
         element={
           <ProtectedRoute redirectPath="/login">
-            <TripsPage />
+            <AdminPage />
           </ProtectedRoute>
         }
       />
