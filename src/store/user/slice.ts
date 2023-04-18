@@ -9,7 +9,7 @@ type UserAuth = {
   phoneNumber?: string;
   id: string;
   displayName?: string;
-  // avatar: string;
+  avatar: string;
   isLoggedIn: DeserializedValue;
 };
 
@@ -18,7 +18,7 @@ const initialState: UserAuth = {
   id: "",
   phoneNumber: "",
   displayName: "",
-  // avatar: "",
+  avatar: "",
   isLoggedIn: getFromLocalStorage("accessToken", false),
 };
 console.log("initialstate", initialState);
@@ -40,15 +40,13 @@ const userSlice = createSlice({
         // state.isLoading = true;
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
-        // state.isLoading = false;
         state.email = action.payload.email || "";
         state.phoneNumber = action.payload.phoneNumber || "";
         state.id = action.payload.id;
         state.displayName = action.payload.displayName || "";
-        // state.avatar = action.payload.avatar || "";
+        state.avatar = action.payload.avatar || "";
       })
       .addCase(fetchUser.rejected, (state, action) => {
-        // state.isLoading = false;
         // state.error = action.error.message || "Something went wrong";
       });
   },
