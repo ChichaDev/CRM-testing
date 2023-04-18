@@ -1,14 +1,25 @@
-const ProfileCard = () => {
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
+import { getUserInfo } from "../../store/user/selector";
+import { fetchUser } from "../../store/user/actions";
+
+export const ProfileCard = () => {
+  const dispatch = useAppDispatch();
+
+  const { email, phoneNumber, displayName } = useAppSelector(getUserInfo);
+
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
+
   return (
-    <div className="card">
-      <div className="card-body">
-        <h5 className="card-title">Profile</h5>
-        <p className="card-text">displayName</p>
-        <p className="card-text">Email</p>
-        <p className="card-text">phoneNumber</p>
+    <div>
+      <div>
+        <h2>Welcome, {displayName}!</h2>
+        <p>Your email is {email}.</p>
+
+        <h2>{phoneNumber || "not number"}</h2>
       </div>
     </div>
   );
 };
-
-export default ProfileCard;

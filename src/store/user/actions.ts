@@ -1,33 +1,45 @@
-// import { createAsyncThunk } from "@reduxjs/toolkit";
-// import { doc, getDoc } from "firebase/firestore";
-// import { getAuth, signInWithCustomToken } from "firebase/auth";
-// import { authentication, db } from "../../../firebase";
-// import { setUser } from "./slice";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { authentication, db } from "../../../firebase";
+import { doc, getDoc } from "firebase/firestore";
 
-// export const loadUserData = createAsyncThunk(
-//   "@user/loadUserData",
-//   async (_, { dispatch }) => {
-//     const accessToken = localStorage.getItem("accessToken") || "";
-//     console.log("acces", accessToken);
+type UserA = {
+  email?: string;
+  phoneNumber?: string;
+  id: string;
+  displayName?: string;
+  // avatar?: string;
+};
 
-//     const decodedToken = await signInWithCustomToken(
-//       authentication,
-//       accessToken
-//     );
-//     const uid = decodedToken.user.uid;
+export const fetchUser = createAsyncThunk<UserA, void, { rejectValue: Error }>(
+  "user/fetchUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const user = authentication.currentUser;
+      console.log("USER", user);
 
-//     const userRef = doc(db, "users", uid);
-//     const userSnapshot = await getDoc(userRef);
-//     const userData = userSnapshot.data();
+      if (!user) {
+        return rejectWithValue(new Error("User is not authenticated"));
+      }
 
-//     dispatch(
-//       setUser({
-//         email: userData?.email,
-//         phoneNumber: userData?.phoneNumber,
-//         displayName: userData?.displayName,
-//         id: uid,
-//         isLoggedIn: true,
-//       })
-//     );
-//   }
-// );
+      const userDoc = doc(db, "users", user.uid);
+      const userSnapshot = await getDoc(userDoc);
+
+      if (!userSnapshot.exists()) {
+        return rejectWithValue(new Error("User document not found"));
+      }
+
+      const userData = userSnapshot.data();
+
+      return {
+        id: user.uid,
+        displayName: userData?.displayName ?? "",
+        email: userData?.email ?? "",
+        phoneNumber: userData?.phoneNumber ?? "",
+        // avatar: userData.photoURL ?? "",
+      };
+    } catch (err: any) {
+      console.error("Failed to fetch user:", err);
+      return rejectWithValue(err);
+    }
+  }
+);

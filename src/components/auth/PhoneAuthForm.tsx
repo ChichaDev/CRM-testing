@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { authentication, db } from "../../../firebase";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/redux-hook";
 import { setUser } from "../../store/user/slice";
 import { doc, setDoc } from "firebase/firestore";
@@ -119,9 +119,9 @@ export const PhoneAuthForm = () => {
               <div id="otpHelp" className="form-text">
                 Please enter the one time pin sent to your phone number
               </div>
-              <Link to={"/login"}>
+              <NavLink to={"/login"}>
                 <h6>back to login</h6>
-              </Link>
+              </NavLink>
             </div>
           </>
         ) : null}
@@ -137,9 +137,9 @@ export const PhoneAuthForm = () => {
             <button type="submit" className="btn btn-primary">
               Request OTP
             </button>
-            <Link to={"/login"}>
+            <NavLink to={"/login"}>
               <h6>back to login</h6>
-            </Link>
+            </NavLink>
           </div>
         ) : null}
         <div id="recaptcha-container"></div>
