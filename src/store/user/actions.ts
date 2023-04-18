@@ -33,9 +33,9 @@ export const fetchUser = createAsyncThunk<
 
     return {
       id: user.uid,
-      displayName: user.displayName ?? "",
-      email: user.email ?? "",
-      phoneNumber: user.phoneNumber ?? "",
+      displayName: userData.displayName ?? "",
+      email: userData.email ?? "",
+      phoneNumber: userData.phoneNumber ?? "",
       avatar: user.photoURL ?? "",
     };
   } catch (err: any) {

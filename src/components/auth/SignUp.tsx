@@ -18,6 +18,9 @@ const SignUp = () => {
 
         console.log(`Пользователь ${user.uid} успешно зарегистрирован`);
 
+        const tokenUser = await user.getIdToken();
+
+        localStorage.setItem("accessToken", JSON.stringify(tokenUser));
         localStorage.setItem("refreshToken", JSON.stringify(user.refreshToken));
 
         const userRef = doc(db, "users", user.uid);

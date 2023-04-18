@@ -14,6 +14,9 @@ export const useFacebookSignIn = () => {
       .then((credential) => {
         console.log(credential.user.uid + "зарегистрирован");
 
+        const tokenUser = credential.user.getIdToken();
+
+        localStorage.setItem("accessToken", JSON.stringify(tokenUser));
         localStorage.setItem(
           "refreshToken",
           JSON.stringify(credential.user.refreshToken)

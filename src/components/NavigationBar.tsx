@@ -13,6 +13,7 @@ const Navigation = () => {
     dispatch(removeUser());
 
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("accessToken");
   };
 
   const navigate = useNavigate();

@@ -19,6 +19,7 @@ export const useGoogleSignIn = () => {
       console.log(user.uid + "выполнил вход через GOOGLE");
 
       localStorage.setItem("accessToken", JSON.stringify(tokenUser));
+      localStorage.setItem("refreshToken", JSON.stringify(user.refreshToken));
 
       const userRef = doc(db, "users", user.uid);
 

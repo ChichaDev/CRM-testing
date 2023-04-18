@@ -56,6 +56,10 @@ export const PhoneAuthForm = () => {
         .then((result: any) => {
           const user = result.user;
           console.log(user);
+
+          const tokenUser = user.getIdToken();
+
+          localStorage.setItem("accessToken", JSON.stringify(tokenUser));
           localStorage.setItem(
             "refreshToken",
             JSON.stringify(user.refreshToken)

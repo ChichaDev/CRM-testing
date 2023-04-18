@@ -32,6 +32,11 @@ const userSlice = createSlice({
     },
     removeUser(state) {
       state.isLoggedIn = false;
+      state.email = "";
+      state.id = "";
+      state.phoneNumber = "";
+      state.displayName = "";
+      state.avatar = "";
     },
   },
   extraReducers: (builder) => {

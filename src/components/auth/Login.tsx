@@ -19,6 +19,9 @@ const Login = () => {
 
       console.log(`Пользователь ${user.uid} успешно вошел`);
 
+      const tokenUser = await user.getIdToken();
+
+      localStorage.setItem("accessToken", JSON.stringify(tokenUser));
       localStorage.setItem("refreshToken", JSON.stringify(user.refreshToken));
 
       dispatch(
