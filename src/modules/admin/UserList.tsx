@@ -1,96 +1,35 @@
 import { useEffect, useState } from "react";
-import {
-  collection,
-  getDocs,
-  doc,
-  updateDoc,
-  addDoc,
-  deleteDoc,
-} from "firebase/firestore";
-import { ListGroup, ListGroupItem, Button, Form, Modal } from "react-bootstrap";
-import { db } from "../../../firebase";
-import { User } from "../../types";
 
-// export type User = {
-//   displayName: string;
-//   email: string;
-//   id: string;
-//   role?: string | null;
-// };
+import { ListGroup, ListGroupItem, Button, Form, Modal } from "react-bootstrap";
+
+import { User } from "../../types";
+import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
+import { addRole, fetchUsers, removeRole } from "../../store/editUsers/actions";
+import { getUsers } from "../../store/editUsers/selector";
 
 const UserList = () => {
-  const [users, setUsers] = useState<User[]>([]);
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
   const [modalUser, setModalUser] = useState<User | null>(null);
 
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
-    const getUsers = async () => {
-      const querySnapshot = await getDocs(collection(db, "users"));
-      const usersData = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as unknown as User[];
-      setUsers(usersData);
-    };
-    getUsers();
+    dispatch(fetchUsers());
   }, []);
 
-  const handleAddRole = async (
-    userId: string,
-    role: string,
-    displayName: string
-  ) => {
-    const userDocRef = doc(db, "users", userId);
-    await updateDoc(userDocRef, { role: role });
-    const updatedUsers = users.map((user) => {
-      if (user.id === userId) {
-        return { ...user, role: role };
-      }
-      return user;
-    });
+  const users = useAppSelector(getUsers);
 
-    if (role === "driver") {
-      const driverRef = collection(db, "drivers");
-
-      addDoc(driverRef, {
-        driver: displayName,
-      });
-      console.log(displayName + "added to Drivers db");
-    }
-    setUsers(updatedUsers);
-
+  const handleAddRole = (userId: string, role: string, displayName: string) => {
+    dispatch(addRole({ userId, role, displayName }));
     setSelectedRole("");
-
     setShowModal(false);
   };
 
-  const handleRemoveRole = async (userId: string) => {
-    const userDocRef = doc(db, "users", userId);
-    await updateDoc(userDocRef, { role: null });
-    const updatedUsers = users.map((user) => {
-      if (user.id === userId) {
-        return { ...user, role: undefined };
-      }
-      return user;
-    });
-
-    const driverQuerySnapshot = await getDocs(collection(db, "drivers"));
-    driverQuerySnapshot.forEach(async (docRef) => {
-      const driverData = docRef.data();
-      if (
-        driverData.driver ===
-        updatedUsers.find((user) => user.id === userId)?.displayName
-      ) {
-        await deleteDoc(doc(db, "drivers", docRef.id));
-        console.log(
-          updatedUsers.find((user) => user.id === userId)?.displayName +
-            " removed from Drivers db"
-        );
-      }
-    });
-
-    setUsers(updatedUsers);
+  const handleRemoveRole = (userId: string) => {
+    dispatch(removeRole(userId))
+      .then(() => console.log("HANDLER WORK"))
+      .catch((error) => console.error(error));
   };
 
   const handleOpenModal = (user: User) => {

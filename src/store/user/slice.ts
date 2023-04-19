@@ -3,21 +3,13 @@ import getFromLocalStorage from "../../utils/getFromLocalStorege";
 import { fetchUser } from "./actions";
 import { User } from "../../types";
 
-// type UserAuth = {
-//   email?: string;
-//   phoneNumber?: string;
-//   id: string;
-//   displayName?: string;
-//   avatar: string;
-//   isLoggedIn: DeserializedValue;
-// };
-
 const initialState: User = {
   email: "",
   id: "",
   phoneNumber: "",
   displayName: "",
   avatar: "",
+  role: "",
   isLoggedIn: getFromLocalStorage("accessToken", false),
 };
 console.log("initialstate", initialState);
@@ -49,6 +41,7 @@ const userSlice = createSlice({
         state.id = action.payload.id;
         state.displayName = action.payload.displayName || "";
         state.avatar = action.payload.avatar || "";
+        state.role = action.payload.role || "";
       })
       .addCase(fetchUser.rejected, (state, action) => {
         // state.error = action.error.message || "Something went wrong";

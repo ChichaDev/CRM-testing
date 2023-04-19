@@ -3,14 +3,6 @@ import { authentication, db } from "../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { User } from "../../types";
 
-// type UserLog = {
-//   email?: string;
-//   phoneNumber?: string;
-//   id: string;
-//   displayName?: string;
-//   avatar?: string;
-// };
-
 export const fetchUser = createAsyncThunk<User, void, { rejectValue: Error }>(
   "user/fetchUser",
   async (_, { rejectWithValue }) => {
@@ -36,6 +28,7 @@ export const fetchUser = createAsyncThunk<User, void, { rejectValue: Error }>(
         email: userData.email ?? "",
         phoneNumber: userData.phoneNumber ?? "",
         avatar: user.photoURL ?? "",
+        role: userData.role ?? "",
       };
     } catch (err: any) {
       console.error("Failed to fetch user:", err);
