@@ -9,13 +9,14 @@ import {
 } from "firebase/firestore";
 import { ListGroup, ListGroupItem, Button, Form, Modal } from "react-bootstrap";
 import { db } from "../../../firebase";
+import { User } from "../../types";
 
-type User = {
-  displayName: string;
-  email: string;
-  uid: string;
-  role?: string | null;
-};
+// export type User = {
+//   displayName: string;
+//   email: string;
+//   id: string;
+//   role?: string | null;
+// };
 
 const UserList = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -43,7 +44,7 @@ const UserList = () => {
     const userDocRef = doc(db, "users", userId);
     await updateDoc(userDocRef, { role: role });
     const updatedUsers = users.map((user) => {
-      if (user.uid === userId) {
+      if (user.id === userId) {
         return { ...user, role: role };
       }
       return user;
@@ -68,7 +69,7 @@ const UserList = () => {
     const userDocRef = doc(db, "users", userId);
     await updateDoc(userDocRef, { role: null });
     const updatedUsers = users.map((user) => {
-      if (user.uid === userId) {
+      if (user.id === userId) {
         return { ...user, role: undefined };
       }
       return user;
@@ -79,11 +80,11 @@ const UserList = () => {
       const driverData = docRef.data();
       if (
         driverData.driver ===
-        updatedUsers.find((user) => user.uid === userId)?.displayName
+        updatedUsers.find((user) => user.id === userId)?.displayName
       ) {
         await deleteDoc(doc(db, "drivers", docRef.id));
         console.log(
-          updatedUsers.find((user) => user.uid === userId)?.displayName +
+          updatedUsers.find((user) => user.id === userId)?.displayName +
             " removed from Drivers db"
         );
       }
@@ -105,14 +106,14 @@ const UserList = () => {
     <div>
       <ListGroup>
         {users.map((user) => (
-          <ListGroupItem key={user.uid}>
+          <ListGroupItem key={user.id}>
             <div>DisplayName: {user.displayName}</div>
             <div>Email: {user.email}</div>
             <div>Role: {user.role || "without Role"}</div>
             {user.role && (
               <Button
                 variant="danger"
-                onClick={() => handleRemoveRole(user.uid)}
+                onClick={() => handleRemoveRole(user.id)}
               >
                 Remove Role
               </Button>
@@ -149,7 +150,7 @@ const UserList = () => {
             variant="primary"
             onClick={() =>
               handleAddRole(
-                modalUser?.uid ? modalUser.uid : "",
+                modalUser?.id ? modalUser.id : "",
                 selectedRole ? selectedRole : "",
                 modalUser?.displayName ? modalUser.displayName : ""
               )

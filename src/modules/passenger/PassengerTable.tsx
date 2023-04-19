@@ -1,13 +1,14 @@
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 
-import { Trips, fetchTripsAsync } from "../../store/trips/slice";
+import { fetchTripsAsync } from "../../store/trips/slice";
 import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
 
 import { authentication, db } from "../../../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getTrips } from "../../store/trips/selector";
 import moment from "moment";
+import { Trips } from "../../types";
 
 type Props = {
   trips: Trips[];

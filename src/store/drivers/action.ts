@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Driver } from "./slice";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase";
+import { Driver } from "../../types";
 
 export const fetchDrivers = createAsyncThunk<
   Driver[],

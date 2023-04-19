@@ -1,18 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { deleteTrip, fetchTrips } from "./actions";
 import { AppDispatch } from "../store";
+import { Trips } from "../../types";
 
-export type Trips = {
-  id: string;
-  driver?: string;
-  carBrand: string;
-  date: string;
-  from: string;
-  passengers: number;
-  ticketPrice: number;
-  to: string;
-  bookedUsers: string[];
-};
+// export type Trips = {
+//   id: string;
+//   driver?: string;
+//   carBrand: string;
+//   date: string;
+//   from: string;
+//   passengers: number;
+//   ticketPrice: number;
+//   to: string;
+//   bookedUsers: string[];
+// };
 
 type TripsSlice = {
   tripsList: Trips[];

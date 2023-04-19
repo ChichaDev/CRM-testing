@@ -1,19 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
-import getFromLocalStorage, {
-  DeserializedValue,
-} from "../../utils/getFromLocalStorege";
+import getFromLocalStorage from "../../utils/getFromLocalStorege";
 import { fetchUser } from "./actions";
+import { User } from "../../types";
 
-type UserAuth = {
-  email?: string;
-  phoneNumber?: string;
-  id: string;
-  displayName?: string;
-  avatar: string;
-  isLoggedIn: DeserializedValue;
-};
+// type UserAuth = {
+//   email?: string;
+//   phoneNumber?: string;
+//   id: string;
+//   displayName?: string;
+//   avatar: string;
+//   isLoggedIn: DeserializedValue;
+// };
 
-const initialState: UserAuth = {
+const initialState: User = {
   email: "",
   id: "",
   phoneNumber: "",

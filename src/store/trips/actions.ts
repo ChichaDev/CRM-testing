@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Trips } from "./slice";
+
 import { db } from "../../../firebase";
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+import { Trips } from "../../types";
 
 export const fetchTrips = createAsyncThunk<
   Trips[],
