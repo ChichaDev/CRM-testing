@@ -1,6 +1,6 @@
 import { FacebookAuthProvider, signInWithPopup } from "firebase/auth";
 import { authentication, db } from "../../../firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useAppDispatch } from "../../store/redux-hook";
 import { setUser } from "../../store/user/slice";
 
@@ -11,7 +11,7 @@ export const useFacebookSignIn = () => {
     const provider = new FacebookAuthProvider();
 
     signInWithPopup(authentication, provider)
-      .then((credential) => {
+      .then(async (credential) => {
         console.log(credential.user.uid + "зарегистрирован");
 
         const tokenUser = credential.user.getIdToken();
@@ -23,12 +23,18 @@ export const useFacebookSignIn = () => {
         );
 
         const userRef = doc(db, "users", credential.user.uid);
+        const userDoc = await getDoc(userRef);
 
-        setDoc(userRef, {
-          email: credential.user.email,
-          displayName: credential.user.displayName || "user",
-          uid: credential.user.uid,
-        });
+        if (userDoc.exists()) {
+          console.log("Пользователь уже существует в базе данных.");
+        } else {
+          console.log("Новый пользователь. Создаем запись в базе данных.");
+          await setDoc(userRef, {
+            email: credential.user.email,
+            displayName: credential.user.displayName || "user",
+            uid: credential.user.uid,
+          });
+        }
 
         dispatch(
           setUser({

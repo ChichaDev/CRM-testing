@@ -1,7 +1,7 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useAppDispatch } from "../../store/redux-hook";
 import { setUser } from "../../store/user/slice";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { authentication, db } from "../../../firebase";
 
 export const useGoogleSignIn = () => {
@@ -22,12 +22,18 @@ export const useGoogleSignIn = () => {
       localStorage.setItem("refreshToken", JSON.stringify(user.refreshToken));
 
       const userRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userRef);
 
-      await setDoc(userRef, {
-        email: user.email,
-        displayName: user.displayName || "user",
-        uid: user.uid,
-      });
+      if (userDoc.exists()) {
+        console.log("Пользователь уже существует в базе данных.");
+      } else {
+        console.log("Новый пользователь. Создаем запись в базе данных.");
+        await setDoc(userRef, {
+          email: user.email,
+          displayName: user.displayName || "user",
+          uid: user.uid,
+        });
+      }
 
       dispatch(
         setUser({
