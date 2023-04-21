@@ -8,6 +8,9 @@ import { DispatcherTable } from "./DispatcherTable";
 export const DispatcherPage = () => {
   const dispatch = useAppDispatch();
   const trips = useAppSelector(getTrips);
+  const dispatcherTrips = trips.filter(
+    (trip) => trip.driver == null && trip.driver == undefined
+  );
 
   useEffect(() => {
     dispatch(fetchTripsAsync());
@@ -15,7 +18,7 @@ export const DispatcherPage = () => {
 
   return (
     <Container fluid>
-      <DispatcherTable trips={trips} />
+      <DispatcherTable trips={dispatcherTrips} />
     </Container>
   );
 };

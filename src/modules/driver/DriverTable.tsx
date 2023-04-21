@@ -76,14 +76,14 @@ export const DriverTable: React.FC<Props> = ({ trips }) => {
       <Table bordered hover style={{ width: "100%" }}>
         <thead>
           <tr>
-            <th>Марка машины</th>
-            <th>Водитель</th>
-            <th>Откуда</th>
-            <th>Куда</th>
-            <th>Количество пассажиров</th>
-            <th>Стоимость билета</th>
-            <th>Дата и время</th>
-            <th>Регистрация водителя</th>
+            <th>Автомобіль</th>
+            <th>Водій</th>
+            <th>Звідки</th>
+            <th>Куди</th>
+            <th>Кількість пасажирів</th>
+            <th>Вартість квитка</th>
+            <th>Дата та час</th>
+            <th>Реєстрація водія</th>
           </tr>
         </thead>
         <tbody>
@@ -106,7 +106,7 @@ export const DriverTable: React.FC<Props> = ({ trips }) => {
                       handleCancelDriver(trip.id);
                     }}
                   >
-                    Отменить заказ
+                    Відмінити замовлення
                   </Button>
                 ) : (
                   <Button
@@ -114,7 +114,7 @@ export const DriverTable: React.FC<Props> = ({ trips }) => {
                     size="sm"
                     onClick={() => handleAcceptDriver(currentDriver, trip.id)}
                   >
-                    Принять заказ
+                    Приняти замовлення
                   </Button>
                 )}
               </td>

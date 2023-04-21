@@ -9,8 +9,9 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../../../firebase";
-import { User } from "firebase/auth";
+// import { User } from "firebase/auth";
 import { Driver } from "../../types";
+import { User } from "../../types/user";
 
 type DriverType = Pick<Driver, "driver">;
 

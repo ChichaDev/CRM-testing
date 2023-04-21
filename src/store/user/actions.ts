@@ -28,7 +28,6 @@ export const fetchUser = createAsyncThunk<User, void, { rejectValue: Error }>(
         email: userData.email ?? "",
         phoneNumber: userData.phoneNumber ?? "",
         avatar: user.photoURL ?? "",
-        role: userData.role ?? "",
       };
     } catch (err: any) {
       console.error("Failed to fetch user:", err);
@@ -36,3 +35,29 @@ export const fetchUser = createAsyncThunk<User, void, { rejectValue: Error }>(
     }
   }
 );
+
+// export const fetchUserRole = createAsyncThunk<
+//   string,
+//   void,
+//   { rejectValue: { message: string } }
+// >("user/fetchUserRole", async (_, { rejectWithValue }) => {
+//   console.log("THUNK work");
+//   const user = authentication.currentUser;
+//   console.log("USER from thunk", user);
+//   if (!user) {
+//     return rejectWithValue({ message: "User is not authenticated" });
+//   }
+//   const userDoc = doc(db, "users", user.uid);
+//   const userSnapshot = await getDoc(userDoc);
+//   if (!userSnapshot.exists()) {
+//     return rejectWithValue(new Error("User document not found"));
+//   }
+
+//   const userData = userSnapshot.data();
+//   if (!userData) {
+//     return rejectWithValue(new Error("User data not found"));
+//   }
+
+//   const role = userData.role || "";
+//   return role;
+// });

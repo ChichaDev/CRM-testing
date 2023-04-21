@@ -32,20 +32,19 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUser.pending, (state, action) => {
-        // state.isLoading = true;
-      })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.email = action.payload.email || "";
         state.phoneNumber = action.payload.phoneNumber || "";
         state.id = action.payload.id;
         state.displayName = action.payload.displayName || "";
         state.avatar = action.payload.avatar || "";
-        state.role = action.payload.role || "";
       })
       .addCase(fetchUser.rejected, (state, action) => {
         // state.error = action.error.message || "Something went wrong";
       });
+    // .addCase(fetchUserRole.fulfilled, (state, action) => {
+    //   state.role = action.payload || "";
+    // });
   },
 });
 

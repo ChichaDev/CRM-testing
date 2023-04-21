@@ -3,48 +3,31 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import AddTripForm from "./AddTripForm";
 import { fetchTripsAsync } from "../../store/trips/slice";
-import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
+import { useAppDispatch } from "../../store/redux-hook";
 import { deleteTrip } from "../../store/trips/actions";
-import { Dropdown, DropdownButton } from "react-bootstrap";
-import { getDrivers } from "../../store/drivers/selector";
+
 import { fetchDrivers } from "../../store/drivers/action";
-import { db } from "../../../firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 import moment from "moment";
 import { Trips } from "../../types";
+import DriverSelectModal from "./DriverSelectModal";
 
 type Props = {
   trips: Trips[];
 };
 
 export const DispatcherTable: React.FC<Props> = ({ trips }) => {
-  const [selectedDriver, setSelectedDriver] = useState<string>("");
   const [isAddTripFormOpen, setIsAddTripFormOpen] = useState(false);
+  const [isAddDriverFormOpen, setIsDriverFormOpen] = useState(false);
 
   const dispatch = useAppDispatch();
 
-  const drivers = useAppSelector(getDrivers);
+  const handleDriverSelectOpen = () => {
+    setIsDriverFormOpen(true);
+  };
 
-  const handleDriverSelect = async (driverId: string, tripId: string) => {
-    const tripRef = doc(db, "trips", tripId);
-    const driverRef = doc(db, "drivers", driverId);
-
-    try {
-      const driverSnapshot = await getDoc(driverRef);
-      const driverName = driverSnapshot.data()?.driver;
-
-      await updateDoc(tripRef, {
-        driver: driverName,
-      });
-
-      console.log("Driver added to trip successfully");
-    } catch (error) {
-      console.error("Error adding driver to trip: ", error);
-    }
-
-    setSelectedDriver("");
-    dispatch(fetchTripsAsync());
+  const handleDriverSelectClose = () => {
+    setIsDriverFormOpen(false);
   };
 
   useEffect(() => {
@@ -53,7 +36,7 @@ export const DispatcherTable: React.FC<Props> = ({ trips }) => {
 
   const handleDeleteTrip = (id: string) => {
     dispatch(deleteTrip(id));
-    console.log("Trip deleted");
+    alert("Поїздка видалена успішно");
     dispatch(fetchTripsAsync());
   };
 
@@ -70,14 +53,14 @@ export const DispatcherTable: React.FC<Props> = ({ trips }) => {
       <Table bordered hover style={{ width: "100%" }}>
         <thead>
           <tr>
-            <th>Марка машины</th>
-            <th>Водитель</th>
-            <th>Откуда</th>
-            <th>Куда</th>
-            <th>Количество пассажиров</th>
-            <th>Стоимость билета</th>
-            <th>Дата и время</th>
-            <th>Удалить поездку</th>
+            <th>Автомобіль</th>
+            <th>Водій</th>
+            <th>Звідки</th>
+            <th>Куди</th>
+            <th>Кількість пасажирів</th>
+            <th>Ціна квитка</th>
+            <th>Дата та час</th>
+            <th>Видалити поїздку</th>
           </tr>
         </thead>
         <tbody>
@@ -85,28 +68,25 @@ export const DispatcherTable: React.FC<Props> = ({ trips }) => {
             <tr key={trip.id}>
               <td>{trip.carBrand}</td>
               <td>
-                {trip.driver || (
-                  <DropdownButton
-                    variant="secondary"
-                    title={
-                      selectedDriver ? selectedDriver : "Выберите водителя"
-                    }
-                  >
-                    {drivers.map((driver) => (
-                      <Dropdown.Item
-                        key={driver.id}
-                        onClick={() => handleDriverSelect(driver.id, trip.id)}
-                      >
-                        {driver.driver}
-                      </Dropdown.Item>
-                    ))}
-                  </DropdownButton>
+                {trip.driver ? (
+                  trip.driver
+                ) : (
+                  <Button variant="secondary" onClick={handleDriverSelectOpen}>
+                    Выбрати водія
+                  </Button>
                 )}
               </td>
+              {isAddDriverFormOpen && (
+                <DriverSelectModal
+                  tripId={trip.id}
+                  show={true}
+                  handleClose={handleDriverSelectClose}
+                />
+              )}
               <td>{trip.from}</td>
               <td>{trip.to}</td>
               <td>{trip.passengers}</td>
-              <td>{trip.ticketPrice}</td>
+              <td>{trip.ticketPrice} грн</td>
               <td>{moment(trip.date).format("YYYY-MM-DDTHH:mm")}</td>
               <td>
                 <Button
@@ -114,7 +94,7 @@ export const DispatcherTable: React.FC<Props> = ({ trips }) => {
                   size="sm"
                   onClick={() => handleDeleteTrip(trip.id)}
                 >
-                  Удалить
+                  Видалити
                 </Button>
               </td>
             </tr>
@@ -123,7 +103,7 @@ export const DispatcherTable: React.FC<Props> = ({ trips }) => {
       </Table>
       <div className="d-flex justify-content-center mb-4">
         <Button onClick={handleAddTripOpen} variant="success">
-          Добавить поездку
+          Додати поїздку
         </Button>
       </div>
       {isAddTripFormOpen && (

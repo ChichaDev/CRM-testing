@@ -32,6 +32,7 @@ export const useGoogleSignIn = () => {
           email: user.email,
           displayName: user.displayName || "user",
           uid: user.uid,
+          role: "passenger",
         });
       }
 

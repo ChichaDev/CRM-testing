@@ -4,7 +4,6 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import { Root } from "./Root";
-import { AdminPage } from "../modules/admin/AdminPage";
 
 import { ProtectedRoute } from "./hoc/ProtectedRoute";
 import { Profile } from "../pages/Profile";
@@ -13,28 +12,50 @@ import RegisterPage from "../modules/auth/RegisterPage";
 import { EditUsersPage } from "../modules/admin/EditUsersPage";
 import { PhoneAuthPage } from "../modules/auth/PhoneAuthPage";
 import { ErrorPage } from "../pages/ErrorPage";
-import { DriverCalendar } from "../modules/driver/DriverCalendar";
+
+import { DriverPage } from "../modules/driver/DriverPage";
+import { PassengerPage } from "../modules/passenger/PassengerPage";
+import { DispatcherPage } from "../modules/dispatcher/DispatcherPage";
+import { DriverTrips } from "../modules/driver/DriverTrips";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route element={<Root />}>
-      <Route
-        path="/calendar"
-        element={
-          <ProtectedRoute redirectPath="/login">
-            <DriverCalendar />
-          </ProtectedRoute>
-        }
-      />
-
+    <Route path="/" element={<Root />}>
       <Route
         path="/tripspage"
         element={
           <ProtectedRoute redirectPath="/login">
-            <AdminPage />
+            <PassengerPage />
           </ProtectedRoute>
         }
       />
+
+      {/* <Route
+        path="/driverpage"
+        element={
+          <ProtectedRoute redirectPath="/login">
+            <DriverPage />
+          </ProtectedRoute>
+        }
+      /> */}
+
+      {/* <Route
+        path="/passengertrips"
+        element={
+          <ProtectedRoute redirectPath="/login">
+            <PassengerPage />
+          </ProtectedRoute>
+        }
+      /> */}
+
+      {/* <Route
+        path="/dispatchertrips"
+        element={
+          <ProtectedRoute redirectPath="/login">
+            <DispatcherPage />
+          </ProtectedRoute>
+        }
+      /> */}
 
       <Route
         path="/profile"

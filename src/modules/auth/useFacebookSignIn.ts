@@ -33,6 +33,7 @@ export const useFacebookSignIn = () => {
             email: credential.user.email,
             displayName: credential.user.displayName || "user",
             uid: credential.user.uid,
+            role: "passenger",
           });
         }
 

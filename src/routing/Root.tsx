@@ -19,7 +19,6 @@ export const Root = () => {
       navigate("/login", { replace: true });
     }
   }, [tokenCheck]);
-
   return (
     <>
       {tokenCheck && <Header />}

@@ -29,6 +29,7 @@ const SignUp = () => {
           email: user.email,
           displayName: user.displayName || "User",
           uid: user.uid,
+          role: "passenger",
         });
 
         dispatch(

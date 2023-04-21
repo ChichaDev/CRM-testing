@@ -8,6 +8,9 @@ import { PassengerTable } from "./PassengerTable";
 export const PassengerPage = () => {
   const dispatch = useAppDispatch();
   const trips = useAppSelector(getTrips);
+  const passengerTrips = trips.filter(
+    (trip) => trip.driver !== null && trip.driver !== undefined
+  );
 
   useEffect(() => {
     dispatch(fetchTripsAsync());
@@ -15,7 +18,7 @@ export const PassengerPage = () => {
 
   return (
     <Container fluid>
-      <PassengerTable trips={trips} />
+      <PassengerTable trips={passengerTrips} />
     </Container>
   );
 };

@@ -9,6 +9,9 @@ import { DriverTable } from "./DriverTable";
 export const DriverPage = () => {
   const dispatch = useAppDispatch();
   const trips = useAppSelector(getTrips);
+  const driverTrips = trips.filter(
+    (trip) => trip.driver == null && trip.driver == undefined
+  );
 
   useEffect(() => {
     dispatch(fetchTripsAsync());
@@ -16,7 +19,7 @@ export const DriverPage = () => {
 
   return (
     <Container fluid>
-      <DriverTable trips={trips} />
+      <DriverTable trips={driverTrips} />
     </Container>
   );
 };

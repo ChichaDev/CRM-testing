@@ -21,7 +21,34 @@ const AddTripForm: React.FC<Props> = ({ show, handleAddTripClose }) => {
   const [ticketPrice, setTicketPrice] = useState(0);
   const [date, setDate] = useState(new Date());
 
+  const [isErrorPassengers, setIsErrorPassengers] = useState(false);
+  const [isErrorPriceTicket, setIsErrorPriceTicket] = useState(false);
+
   const dispatch = useAppDispatch();
+
+  const handleChangePassengers = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = Number(event.target.value);
+    if (value <= 12) {
+      setPassengers(value);
+      setIsErrorPassengers(false);
+    } else {
+      setIsErrorPassengers(true);
+    }
+  };
+
+  const handleChangePriceTicket = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = Number(event.target.value);
+    if (value <= 10_000 && value > 100) {
+      setTicketPrice(value);
+      setIsErrorPriceTicket(false);
+    } else {
+      setIsErrorPriceTicket(true);
+    }
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -50,78 +77,90 @@ const AddTripForm: React.FC<Props> = ({ show, handleAddTripClose }) => {
   return (
     <Modal show={show}>
       <Modal.Header>
-        <Modal.Title>Добавить поездку</Modal.Title>
+        <Modal.Title>Додати поїздку</Modal.Title>
       </Modal.Header>
       <Form onSubmit={handleSubmit}>
         <Modal.Body>
           <Form.Group controlId="carBrand">
-            <Form.Label>Марка машины</Form.Label>
+            <Form.Label>Автомобіль</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Введите марку машины"
+              placeholder="Марка авто"
               value={carBrand}
               onChange={(event) => setCarBrand(event.target.value)}
+              required
             />
           </Form.Group>
 
           <Form.Group controlId="from">
-            <Form.Label>Откуда</Form.Label>
+            <Form.Label>Звідки</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Введите город отправления"
+              placeholder="Оберіть місто відправлення"
               value={from}
               onChange={(event) => setFrom(event.target.value)}
+              required
             />
           </Form.Group>
 
           <Form.Group controlId="to">
-            <Form.Label>Куда</Form.Label>
+            <Form.Label>Куди</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Введите город прибытия"
+              placeholder="Оберіть місто прибуття"
               value={to}
               onChange={(event) => setTo(event.target.value)}
+              required
             />
           </Form.Group>
 
-          <Form.Group as={Col} controlId="passengers">
-            <Form.Label>Количество пассажиров</Form.Label>
+          <Form.Group controlId="passengers">
+            <Form.Label>Кількість пасажирів</Form.Label>
             <Form.Control
               type="number"
               min="0"
-              value={passengers}
-              onChange={(event) => setPassengers(Number(event.target.value))}
+              max="12"
+              onChange={handleChangePassengers}
+              isInvalid={isErrorPassengers}
+              required
             />
+            <Form.Control.Feedback type="invalid">
+              Максимальна кількість пасажирів - 12
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group controlId="ticketPrice">
-            <Form.Label>Стоимость билета</Form.Label>
+            <Form.Label>Ціна квитка</Form.Label>
             <Form.Control
               type="number"
-              value={ticketPrice}
-              onChange={(event) => setTicketPrice(parseInt(event.target.value))}
+              min="100"
+              max="10_000"
+              onChange={handleChangePriceTicket}
+              isInvalid={isErrorPriceTicket}
+              required
             />
+            <Form.Control.Feedback type="invalid">
+              Мінімальна вартість - 100грн, максимальна - 10000грн
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group controlId="date">
-            <Form.Label>Дата и время</Form.Label>
+            <Form.Label>Дата та час</Form.Label>
             <Form.Control
               type="datetime-local"
               value={moment(date).format("YYYY-MM-DDTHH:mm")}
               onChange={(event) => setDate(moment(event.target.value).toDate())}
-              // type="datetime-local"
-              // value={date.toISOString().slice(0, -8)}
-              // onChange={(event) => setDate(new Date(event.target.value))}
+              required
             />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => handleAddTripClose()}>
-            Отменить
+            Відмінити
           </Button>
 
           <Button variant="primary" type="submit">
-            Добавить
+            Додати
           </Button>
         </Modal.Footer>
       </Form>

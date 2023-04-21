@@ -4,7 +4,7 @@ import { authentication, db } from "../../../firebase";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/redux-hook";
 import { setUser } from "../../store/user/slice";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export const PhoneAuthForm = () => {
   const countryCode = "+38";
@@ -53,7 +53,7 @@ export const PhoneAuthForm = () => {
       let confirmationResult = (window as any).confirmationResult;
       confirmationResult
         .confirm(otp)
-        .then((result: any) => {
+        .then(async (result: any) => {
           const user = result.user;
           console.log(user);
 
@@ -66,12 +66,19 @@ export const PhoneAuthForm = () => {
           );
 
           const userRef = doc(db, "users", user.uid);
+          const userDoc = await getDoc(userRef);
 
-          setDoc(userRef, {
-            email: user.phoneNumber,
-            displayName: user.displayName || "user",
-            uid: user.uid,
-          });
+          if (userDoc.exists()) {
+            console.log("Пользователь уже существует в базе данных.");
+          } else {
+            console.log("Новый пользователь. Создаем запись в базе данных.");
+            await setDoc(userRef, {
+              email: user.phoneNumber,
+              displayName: user.displayName || "user",
+              uid: user.uid,
+              role: "passenger",
+            });
+          }
 
           dispatch(
             setUser({

@@ -27,7 +27,7 @@ export const PassengerTable: React.FC<Props> = ({ trips }) => {
     const bookedUsers = tripData.data()?.bookedUsers || [];
 
     if (passengers === 0) {
-      console.log("Невозможно забронировать поездку, все места заняты.");
+      alert("Неможливо забронювати поїдку, всі місця зайняті");
       return;
     }
 
@@ -41,7 +41,7 @@ export const PassengerTable: React.FC<Props> = ({ trips }) => {
 
     dispatch(fetchTripsAsync());
 
-    console.log("Поездка забронирована успешно");
+    alert("Поїздка заброньована успішно");
   };
 
   const handleCancelBooking = async (tripId: string) => {
@@ -55,7 +55,7 @@ export const PassengerTable: React.FC<Props> = ({ trips }) => {
     const index = bookedUsers.indexOf(currentUser);
 
     if (index === -1) {
-      console.log("Вы не забронировали эту поездку");
+      alert("Ви не забронювали цю поїздку, всі місця зайняті");
       return;
     }
 
@@ -66,7 +66,7 @@ export const PassengerTable: React.FC<Props> = ({ trips }) => {
       bookedUsers: bookedUsers,
     });
     dispatch(fetchTripsAsync());
-    console.log("Бронирование отменено успешно");
+    alert("Бронювання завершено успішно");
   };
 
   const currentUser = authentication.currentUser?.uid;
@@ -84,15 +84,15 @@ export const PassengerTable: React.FC<Props> = ({ trips }) => {
       <Table bordered hover style={{ width: "100%" }}>
         <thead>
           <tr>
-            <th>Марка машины</th>
-            <th>Водитель</th>
-            <th>Откуда</th>
-            <th>Куда</th>
-            <th>Количество пассажиров</th>
-            <th>Стоимость билета</th>
-            <th>Дата и время</th>
+            <th>Автомобіль</th>
+            <th>Водій</th>
+            <th>Звідки</th>
+            <th>Куди</th>
+            <th>Кількість пасажирів</th>
+            <th>Ціна квитка</th>
+            <th>Дата та час</th>
 
-            <th>Бронирование поездки</th>
+            <th>Бронювання поїздки</th>
           </tr>
         </thead>
         <tbody>
@@ -103,7 +103,7 @@ export const PassengerTable: React.FC<Props> = ({ trips }) => {
               <td>{trip.from}</td>
               <td>{trip.to}</td>
               <td>{trip.passengers}</td>
-              <td>{trip.ticketPrice}</td>
+              <td>{trip.ticketPrice} грн</td>
               <td>{moment(trip.date).format("YYYY-MM-DDTHH:mm")}</td>
 
               <td>
@@ -113,7 +113,7 @@ export const PassengerTable: React.FC<Props> = ({ trips }) => {
                     variant="danger"
                     size="sm"
                   >
-                    Отменить бронь
+                    Відмінити бронь
                   </Button>
                 ) : (
                   <Button
@@ -121,7 +121,7 @@ export const PassengerTable: React.FC<Props> = ({ trips }) => {
                     variant="success"
                     size="sm"
                   >
-                    Забронировать
+                    Забронювати
                   </Button>
                 )}
               </td>
