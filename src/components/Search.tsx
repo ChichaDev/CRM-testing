@@ -1,24 +1,25 @@
 import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 
-interface SearchProps {
+type SearchProps = {
   onSearch: (searchParams: SearchParams) => void;
-}
+};
 
-interface SearchParams {
+type SearchParams = {
   from: string;
   to: string;
   date: Date;
-}
+};
 
 export const Search: React.FC<SearchProps> = ({ onSearch }) => {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSearch({ from, to, date });
+    onSearch({ from, to, date: new Date(date) });
+    console.log("SUBMIT work");
   };
 
   return (
@@ -52,8 +53,8 @@ export const Search: React.FC<SearchProps> = ({ onSearch }) => {
             <Form.Control
               type="date"
               placeholder="Введите дату"
-              value={date.toISOString().substr(0, 10)}
-              onChange={(event) => setDate(new Date(event.target.value))}
+              value={date}
+              onChange={(event) => setDate(event.target.value)}
             />
           </Form.Group>
         </Col>
