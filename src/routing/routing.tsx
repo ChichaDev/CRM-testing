@@ -92,3 +92,54 @@ export const router = createBrowserRouter(
     </Route>
   )
 );
+
+export const defaultRouter = createBrowserRouter([
+  {
+    path: "auth",
+    children: [
+      {
+        path: "login",
+        element: <LoginPage />,
+      },
+      {
+        path: "signup",
+        element: <Root />,
+      },
+    ],
+  },
+  {
+    path: "",
+    element: <PassengerPage />,
+  },
+  {
+    path: "driver",
+    children: [
+      {
+        path: "",
+        element: <DriverPage />,
+      },
+    ],
+  },
+  {
+    path: "dispatcher",
+    children: [
+      {
+        path: "",
+        element: <DispatcherPage />,
+      },
+    ],
+  },
+  {
+    path: "admin",
+    children: [
+      {
+        path: "",
+        element: <EditUsersPage />,
+      },
+    ],
+  },
+  {
+    path: "*",
+    element: <ErrorPage />,
+  },
+]);
