@@ -1,54 +1,33 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { useAppSelector } from "../../store/redux-hook";
-import { getIsLoggedInStatus } from "../../store/user/selector";
+import { getIsLoggedInStatus, getUserRole } from "../../store/user/selector";
 
-type ProtectedRouteProps = {
-  redirectPath: string;
-  children: JSX.Element;
-};
+interface PrivateRouteProps {
+  path: string;
+  element: React.ReactNode;
+  allowedRoles: string[];
+}
 
-export const ProtectedRoute = (props: ProtectedRouteProps) => {
-  const { redirectPath, children } = props;
+export const PrivateRoute: React.FC<PrivateRouteProps> = ({
+  path,
+  element,
+  allowedRoles,
+}) => {
+  const isLoggedIn = useAppSelector(getIsLoggedInStatus);
 
-  const token = useAppSelector(getIsLoggedInStatus);
+  const userRole = useAppSelector(getUserRole);
 
-  const location = useLocation();
-
-  if (!token) {
-    return <Navigate to={redirectPath} state={{ from: location }} />;
+  if (!isLoggedIn) {
+    return <Navigate to="/auth/login" />;
   }
 
-  return children;
+  if (userRole && !allowedRoles.includes(userRole)) {
+    return <Navigate to="/error" />;
+  }
+
+  return (
+    <Routes>
+      <Route path={path} element={element} />
+    </Routes>
+  );
 };
-
-// import { Navigate, useLocation } from "react-router-dom";
-// import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
-// import { getIsLoggedInStatus, getUserRole } from "../../store/user/selector";
-// import { useMemo } from "react";
-// import { fetchUserRole } from "../../store/user/actions";
-
-// type ProtectedRouteProps = {
-//   children: JSX.Element;
-//   allowedRoles: string[];
-//   redirectPath: string;
-// };
-
-// export const ProtectedRoute = (props: ProtectedRouteProps) => {
-//   const { children, allowedRoles, redirectPath } = props;
-//   const isLoggedIn = useAppSelector(getIsLoggedInStatus);
-//   const dispatch = useAppDispatch();
-//   const location = useLocation();
-
-//   const userRole = useAppSelector(useMemo(() => getUserRole, [dispatch])) || "";
-//   console.log("USER ROLE PROTECD", userRole);
-
-//   if (!isLoggedIn) {
-//     return <Navigate to={redirectPath} state={{ from: location }} />;
-//   }
-
-//   if (!allowedRoles.includes(userRole)) {
-//     return <Navigate to="/error" />;
-//   }
-
-//   return children;
-// };

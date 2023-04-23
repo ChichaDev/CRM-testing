@@ -26,14 +26,14 @@ export const Form = ({ title, handleClick }: FormProps) => {
 
   const handleClickGoogle = async () => {
     await handleGoogleSignIn();
-    navigate("/tripspage");
+    navigate("/profile/dashboard");
   };
 
   const registerWithFacebook = useFacebookSignIn();
 
   const handleClickFacebook = async () => {
     await registerWithFacebook();
-    navigate("/tripspage");
+    navigate("/profile/dashboard");
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,7 +41,7 @@ export const Form = ({ title, handleClick }: FormProps) => {
     setLoading(true);
     await handleClick(email, password);
     setLoading(false);
-    navigate("/tripspage");
+    navigate("/profile/dashboard");
   };
 
   return (
@@ -94,7 +94,7 @@ export const Form = ({ title, handleClick }: FormProps) => {
           </div>
 
           <div className="d-flex align-items-center justify-content-center">
-            <Link to={"/phoneauth"} style={{ textDecoration: "none" }}>
+            <Link to={"/auth/phone"} style={{ textDecoration: "none" }}>
               <Button
                 className="d-flex align-items-center justify-content-space-between"
                 style={{
@@ -116,11 +116,11 @@ export const Form = ({ title, handleClick }: FormProps) => {
 
           {title === "Sign In" ? (
             <div className="w-100 text-center mt-2">
-              Need an account? <Link to="/signup">Sign Up</Link>
+              Need an account? <Link to="/auth/signup">Sign Up</Link>
             </div>
           ) : (
             <div className="w-100 text-center mt-2">
-              Already have an account? <Link to="/login">Sign in</Link>
+              Already have an account? <Link to="/auth/login">Sign in</Link>
             </div>
           )}
         </Card>

@@ -1,118 +1,117 @@
-import {
-  Route,
-  createBrowserRouter,
-  createRoutesFromElements,
-} from "react-router-dom";
-import { Root } from "./Root";
-
-import { ProtectedRoute } from "./hoc/ProtectedRoute";
-import { Profile } from "../pages/Profile";
 import LoginPage from "../modules/auth/LoginPage";
 import RegisterPage from "../modules/auth/RegisterPage";
-import { EditUsersPage } from "../modules/admin/EditUsersPage";
-import { PhoneAuthPage } from "../modules/auth/PhoneAuthPage";
-import { ErrorPage } from "../pages/ErrorPage";
-
-import { DriverPage } from "../modules/driver/DriverPage";
 import { PassengerPage } from "../modules/passenger/PassengerPage";
+import { DriverPage } from "../modules/driver/DriverPage";
 import { DispatcherPage } from "../modules/dispatcher/DispatcherPage";
-import { DriverTrips } from "../modules/driver/DriverTrips";
+import { EditUsersPage } from "../modules/admin/EditUsersPage";
+import { ErrorPage } from "../pages/ErrorPage";
+import { createBrowserRouter } from "react-router-dom";
+import { Root } from "./Root";
+import { Profile } from "../pages/Profile";
+import { PrivateRoute } from "./hoc/ProtectedRoute";
+import { PhoneAuthPage } from "../modules/auth/PhoneAuthPage";
 
-export const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route element={<Root />}>
-      <Route
-        path="/tripspage"
-        element={
-          <ProtectedRoute redirectPath="/login">
-            <PassengerPage />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute redirectPath="/login">
-            <Profile />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/edituser"
-        element={
-          <ProtectedRoute redirectPath="/login">
-            <EditUsersPage />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route path="/login" element={<LoginPage />} />
-
-      <Route path="/signup" element={<RegisterPage />} />
-
-      <Route path="/phoneauth" element={<PhoneAuthPage />} />
-
-      <Route
-        path="*"
-        element={
-          <ProtectedRoute redirectPath="/login">
-            <ErrorPage />
-          </ProtectedRoute>
-        }
-      />
-    </Route>
-  )
-);
-
-// export const defaultRouter = createBrowserRouter([
-//   {
-//     path: "auth",
-//     children: [
-//       {
-//         path: "login",
-//         element: <LoginPage />,
-//       },
-//       {
-//         path: "signup",
-//         element: <Root />,
-//       },
-//     ],
-//   },
-//   {
-//     path: "",
-//     element: <PassengerPage />,
-//   },
-//   {
-//     path: "driver",
-//     children: [
-//       {
-//         path: "",
-//         element: <DriverPage />,
-//       },
-//     ],
-//   },
-//   {
-//     path: "dispatcher",
-//     children: [
-//       {
-//         path: "",
-//         element: <DispatcherPage />,
-//       },
-//     ],
-//   },
-//   {
-//     path: "admin",
-//     children: [
-//       {
-//         path: "",
-//         element: <EditUsersPage />,
-//       },
-//     ],
-//   },
-//   {
-//     path: "*",
-//     element: <ErrorPage />,
-//   },
-// ]);
+export const defaultRouter = createBrowserRouter([
+  {
+    path: "/*",
+    element: <Root />,
+    children: [
+      {
+        path: "auth",
+        children: [
+          {
+            path: "login",
+            element: <LoginPage />,
+          },
+          {
+            path: "signup",
+            element: <RegisterPage />,
+          },
+          {
+            path: "phone",
+            element: <PhoneAuthPage />,
+          },
+        ],
+      },
+      {
+        path: "passenger",
+        children: [
+          {
+            path: "page/*",
+            element: (
+              <PrivateRoute
+                path="/"
+                element={<PassengerPage />}
+                allowedRoles={["passenger"]}
+              />
+            ),
+          },
+        ],
+      },
+      {
+        path: "driver",
+        children: [
+          {
+            path: "page/*",
+            element: (
+              <PrivateRoute
+                allowedRoles={["driver"]}
+                path="/"
+                element={<DriverPage />}
+              />
+            ),
+          },
+        ],
+      },
+      {
+        path: "dispatcher",
+        children: [
+          {
+            path: "page/*",
+            element: (
+              <PrivateRoute
+                allowedRoles={["dispatcher"]}
+                path="/"
+                element={<DispatcherPage />}
+              />
+            ),
+          },
+        ],
+      },
+      {
+        path: "admin",
+        children: [
+          {
+            path: "edituser/*",
+            element: (
+              <PrivateRoute
+                allowedRoles={["admin"]}
+                path="/"
+                element={<EditUsersPage />}
+              />
+            ),
+          },
+        ],
+      },
+      {
+        path: "profile",
+        children: [
+          {
+            path: "dashboard/*",
+            element: (
+              <PrivateRoute
+                allowedRoles={["admin", "passenger", "dispatcher", "driver"]}
+                path="/"
+                element={<Profile />}
+              />
+            ),
+          },
+        ],
+      },
+      {
+        path: "*",
+        element: <ErrorPage />,
+      },
+    ],
+  },
+]);

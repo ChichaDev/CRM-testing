@@ -43,32 +43,39 @@ const Navigation = () => {
         >
           <Nav className="mr-auto">
             <NavDropdown.Item
-              onClick={() => handleLinkClick("/profile")}
+              onClick={() => handleLinkClick("/profile/dashboard")}
               style={{ height: "3rem", width: "100px" }}
             >
-              <NavLink to={"/profile"}>Profile</NavLink>
+              Profile
             </NavDropdown.Item>
 
             <NavDropdown.Item
-              onClick={() => handleLinkClick("/tripspage")}
+              onClick={() => handleLinkClick("/passenger/page")}
               style={{ height: "3rem", width: "100px" }}
             >
-              <NavLink to={"/tripspage"}>Trips</NavLink>
+              Passenger
             </NavDropdown.Item>
 
             <NavDropdown.Item
-              onClick={() => handleLinkClick("/edituser")}
+              onClick={() => handleLinkClick("/driver/page")}
               style={{ height: "3rem", width: "100px" }}
             >
-              <NavLink to={"/edituser"}>Edit Users</NavLink>
+              Driver
             </NavDropdown.Item>
 
-            {/* <NavDropdown.Item
-              onClick={() => handleLinkClick("/drivertrips")}
+            <NavDropdown.Item
+              onClick={() => handleLinkClick("/dispatcher/page")}
               style={{ height: "3rem", width: "100px" }}
             >
-              <NavLink to={"/drivertrips"}>Driver Trips</NavLink>
-            </NavDropdown.Item> */}
+              Dispatcher
+            </NavDropdown.Item>
+
+            <NavDropdown.Item
+              onClick={() => handleLinkClick("/admin/edituser")}
+              style={{ height: "3rem", width: "100px" }}
+            >
+              Admin
+            </NavDropdown.Item>
 
             <NavDropdown.Divider style={{ width: "100px" }} />
 

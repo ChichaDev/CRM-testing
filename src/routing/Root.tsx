@@ -11,14 +11,10 @@ export const Root = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (tokenCheck) {
-      navigate("/tripspage", { replace: true });
-    }
-
     if (!tokenCheck) {
-      navigate("/login", { replace: true });
+      navigate("/auth/login", { replace: true });
     }
-  }, [tokenCheck]);
+  }, []);
   return (
     <>
       {tokenCheck && <Header />}

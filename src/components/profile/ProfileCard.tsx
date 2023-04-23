@@ -1,18 +1,11 @@
-import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
+import { useAppSelector } from "../../store/redux-hook";
 import { getUserInfo } from "../../store/user/selector";
-import { fetchUser } from "../../store/user/actions";
+
 import { Button, Card, Col, Row } from "react-bootstrap";
 
 export const ProfileCard = () => {
-  const dispatch = useAppDispatch();
-
   const { email, phoneNumber, displayName, avatar } =
     useAppSelector(getUserInfo);
-
-  useEffect(() => {
-    dispatch(fetchUser());
-  }, [dispatch]);
 
   return (
     <div className="d-flex justify-content-center">

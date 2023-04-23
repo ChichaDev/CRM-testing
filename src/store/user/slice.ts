@@ -28,6 +28,7 @@ const userSlice = createSlice({
       state.phoneNumber = "";
       state.displayName = "";
       state.avatar = "";
+      state.role = "";
     },
   },
   extraReducers: (builder) => {
@@ -38,13 +39,12 @@ const userSlice = createSlice({
         state.id = action.payload.id;
         state.displayName = action.payload.displayName || "";
         state.avatar = action.payload.avatar || "";
+        state.role = action.payload.role || "";
       })
+
       .addCase(fetchUser.rejected, (state, action) => {
         // state.error = action.error.message || "Something went wrong";
       });
-    // .addCase(fetchUserRole.fulfilled, (state, action) => {
-    //   state.role = action.payload || "";
-    // });
   },
 });
 

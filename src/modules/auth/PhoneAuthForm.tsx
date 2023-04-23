@@ -86,7 +86,7 @@ export const PhoneAuthForm = () => {
             })
           );
 
-          navigate("/tripspage");
+          navigate("/profile/dashboard");
         })
         .catch((error: any) => {
           console.log(error);
@@ -130,9 +130,7 @@ export const PhoneAuthForm = () => {
               <div id="otpHelp" className="form-text">
                 Please enter the one time pin sent to your phone number
               </div>
-              <NavLink to={"/login"}>
-                <h6>back to login</h6>
-              </NavLink>
+              <NavLink to={"/auth/login"}>back to login</NavLink>
             </div>
           </>
         ) : null}
@@ -148,9 +146,7 @@ export const PhoneAuthForm = () => {
             <button type="submit" className="btn btn-primary">
               Request OTP
             </button>
-            <NavLink to={"/login"}>
-              <h6>back to login</h6>
-            </NavLink>
+            <NavLink to={"/auth/login"}>back to login</NavLink>
           </div>
         ) : null}
         <div id="recaptcha-container"></div>
