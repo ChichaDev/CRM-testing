@@ -1,69 +1,91 @@
-import React, { useState } from "react";
+import moment from "moment";
+import React, { useRef, useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 
 type SearchProps = {
   onSearch: (searchParams: SearchParams) => void;
+  onClear: () => void;
 };
 
 type SearchParams = {
   from: string;
   to: string;
-  date: Date;
+  date: string;
 };
 
-export const Search: React.FC<SearchProps> = ({ onSearch }) => {
+export const Search: React.FC<SearchProps> = ({ onSearch, onClear }) => {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date());
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSearch({ from, to, date: new Date(date) });
-    console.log("SUBMIT work");
+    onSearch({ from, to, date: moment(date).toISOString() });
+  };
+
+  const handleClear = () => {
+    setFrom("");
+    setTo("");
+    setDate(new Date());
+    onClear();
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Row>
-        <Col>
-          <Form.Group controlId="from">
-            <Form.Label>Откуда</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Введите место отправления"
-              value={from}
-              onChange={(event) => setFrom(event.target.value)}
-            />
-          </Form.Group>
-        </Col>
-        <Col>
-          <Form.Group controlId="to">
-            <Form.Label>Куда</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Введите место назначения"
-              value={to}
-              onChange={(event) => setTo(event.target.value)}
-            />
-          </Form.Group>
-        </Col>
-        <Col>
-          <Form.Group controlId="date">
-            <Form.Label>Дата</Form.Label>
-            <Form.Control
-              type="date"
-              placeholder="Введите дату"
-              value={date}
-              onChange={(event) => setDate(event.target.value)}
-            />
-          </Form.Group>
-        </Col>
-        <Col>
-          <Button variant="primary" type="submit">
-            Найти
-          </Button>
-        </Col>
-      </Row>
-    </Form>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        alignContent: "center",
+      }}
+    >
+      <Form onSubmit={handleSubmit}>
+        <Row>
+          <Col>
+            <Form.Group controlId="from">
+              <Form.Label>Звідки</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Місто відправлення"
+                value={from}
+                onChange={(event) => setFrom(event.target.value)}
+              />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group controlId="to">
+              <Form.Label>Куди</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Місто прибуття"
+                value={to}
+                onChange={(event) => setTo(event.target.value)}
+              />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group controlId="date">
+              <Form.Label>Дата</Form.Label>
+              <Form.Control
+                type="date"
+                placeholder="Запланована дата"
+                value={moment(date).format("YYYY-MM-DD")}
+                onChange={(event) =>
+                  setDate(moment(event.target.value).toDate())
+                }
+              />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Button variant="primary" type="submit">
+              Пошук
+            </Button>
+            <Button variant="secondary" onClick={handleClear}>
+              Очистити
+            </Button>
+          </Col>
+        </Row>
+      </Form>
+    </div>
   );
 };

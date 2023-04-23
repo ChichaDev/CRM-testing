@@ -6,12 +6,17 @@ import { Container } from "react-bootstrap";
 import { PassengerTable } from "./PassengerTable";
 import { Search } from "../../components/Search";
 import { getTrips } from "../../store/trips/selector";
+import moment from "moment";
+import { Trips } from "../../types";
+import { SortByDate } from "../../components/SortByDate";
 
 type SearchParams = {
   from: string;
   to: string;
-  date: Date;
+  date: string;
 };
+
+type SortOrder = "asc" | "desc";
 
 export const PassengerPage = () => {
   const dispatch = useAppDispatch();
@@ -27,29 +32,59 @@ export const PassengerPage = () => {
   );
 
   const [filteredTrips, setFilteredTrips] = useState(passengerTrips);
-  console.log("filteredTrips", filteredTrips);
+  const [searchParams, setSearchParams] = useState<SearchParams>({
+    from: "",
+    to: "",
+    date: "",
+  });
+  const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
-  const handleSearch = (searchParams: SearchParams) => {
+  useEffect(() => {
+    if (trips !== filteredTrips) {
+      setFilteredTrips(passengerTrips);
+    }
+  }, [trips]);
+
+  const handleSearch = (params: SearchParams) => {
+    setSearchParams(params);
     const filtered = passengerTrips.filter((trip) => {
-      const { from, to, date } = searchParams;
-
-      console.log(searchParams);
+      const { from, to, date } = params;
 
       const isFromMatched =
         from === "" || trip.from.toLowerCase().includes(from.toLowerCase());
       const isToMatched =
         to === "" || trip.to.toLowerCase().includes(to.toLowerCase());
+
       const isDateMatched =
-        date === null || trip.date.toString() === date.toDateString();
+        date === null || moment(trip.date).isSame(moment(date), "day");
+
       return isFromMatched && isToMatched && isDateMatched;
     });
 
     setFilteredTrips(filtered);
   };
 
+  const handleClear = () => {
+    setSearchParams({ from: "", to: "", date: "" });
+    setFilteredTrips(passengerTrips);
+    setSortOrder("asc");
+  };
+
+  const handleSort = (sortedTrips: Trips[]) => {
+    setFilteredTrips(sortedTrips);
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+  };
+
   return (
     <Container fluid>
-      <Search onSearch={handleSearch} />
+      <Search onSearch={handleSearch} onClear={handleClear} />
+
+      <SortByDate
+        trips={filteredTrips}
+        sortOrder={sortOrder}
+        onSort={handleSort}
+      />
+
       <PassengerTable trips={filteredTrips} />
     </Container>
   );

@@ -20,7 +20,7 @@ import { DriverTrips } from "../modules/driver/DriverTrips";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Root />}>
+    <Route element={<Root />}>
       <Route
         path="/tripspage"
         element={
@@ -29,33 +29,6 @@ export const router = createBrowserRouter(
           </ProtectedRoute>
         }
       />
-
-      {/* <Route
-        path="/driverpage"
-        element={
-          <ProtectedRoute redirectPath="/login">
-            <DriverPage />
-          </ProtectedRoute>
-        }
-      /> */}
-
-      {/* <Route
-        path="/passengertrips"
-        element={
-          <ProtectedRoute redirectPath="/login">
-            <PassengerPage />
-          </ProtectedRoute>
-        }
-      /> */}
-
-      {/* <Route
-        path="/dispatchertrips"
-        element={
-          <ProtectedRoute redirectPath="/login">
-            <DispatcherPage />
-          </ProtectedRoute>
-        }
-      /> */}
 
       <Route
         path="/profile"
@@ -93,53 +66,53 @@ export const router = createBrowserRouter(
   )
 );
 
-export const defaultRouter = createBrowserRouter([
-  {
-    path: "auth",
-    children: [
-      {
-        path: "login",
-        element: <LoginPage />,
-      },
-      {
-        path: "signup",
-        element: <Root />,
-      },
-    ],
-  },
-  {
-    path: "",
-    element: <PassengerPage />,
-  },
-  {
-    path: "driver",
-    children: [
-      {
-        path: "",
-        element: <DriverPage />,
-      },
-    ],
-  },
-  {
-    path: "dispatcher",
-    children: [
-      {
-        path: "",
-        element: <DispatcherPage />,
-      },
-    ],
-  },
-  {
-    path: "admin",
-    children: [
-      {
-        path: "",
-        element: <EditUsersPage />,
-      },
-    ],
-  },
-  {
-    path: "*",
-    element: <ErrorPage />,
-  },
-]);
+// export const defaultRouter = createBrowserRouter([
+//   {
+//     path: "auth",
+//     children: [
+//       {
+//         path: "login",
+//         element: <LoginPage />,
+//       },
+//       {
+//         path: "signup",
+//         element: <Root />,
+//       },
+//     ],
+//   },
+//   {
+//     path: "",
+//     element: <PassengerPage />,
+//   },
+//   {
+//     path: "driver",
+//     children: [
+//       {
+//         path: "",
+//         element: <DriverPage />,
+//       },
+//     ],
+//   },
+//   {
+//     path: "dispatcher",
+//     children: [
+//       {
+//         path: "",
+//         element: <DispatcherPage />,
+//       },
+//     ],
+//   },
+//   {
+//     path: "admin",
+//     children: [
+//       {
+//         path: "",
+//         element: <EditUsersPage />,
+//       },
+//     ],
+//   },
+//   {
+//     path: "*",
+//     element: <ErrorPage />,
+//   },
+// ]);

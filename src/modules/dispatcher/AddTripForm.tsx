@@ -148,7 +148,7 @@ const AddTripForm: React.FC<Props> = ({ show, handleAddTripClose }) => {
             <Form.Label>Дата та час</Form.Label>
             <Form.Control
               type="datetime-local"
-              value={moment(date).format("YYYY-MM-DDTHH:mm")}
+              value={moment(date).format("YYYY-MM-DD")}
               onChange={(event) => setDate(moment(event.target.value).toDate())}
               required
             />
