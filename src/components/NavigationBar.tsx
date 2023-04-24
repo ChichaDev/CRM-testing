@@ -1,13 +1,16 @@
 import { useRef, useState } from "react";
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { Link, NavLink, To, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../store/redux-hook";
+import { useAppDispatch, useAppSelector } from "../store/redux-hook";
 import { removeUser } from "../store/user/slice";
+import { getUserRole } from "../store/user/selector";
 
 const Navigation = () => {
   const [expanded, setExpanded] = useState(false);
 
   const dispatch = useAppDispatch();
+
+  const userRole = useAppSelector(getUserRole);
 
   const logoutUser = () => {
     dispatch(removeUser());
@@ -46,36 +49,53 @@ const Navigation = () => {
               onClick={() => handleLinkClick("/profile/dashboard")}
               style={{ height: "3rem", width: "100px" }}
             >
-              Profile
+              Профіль
             </NavDropdown.Item>
 
-            <NavDropdown.Item
-              onClick={() => handleLinkClick("/passenger/page")}
-              style={{ height: "3rem", width: "100px" }}
-            >
-              Passenger
-            </NavDropdown.Item>
+            {userRole === "passenger" || userRole === "admin" ? (
+              <NavDropdown.Item
+                onClick={() => handleLinkClick("/passenger/page")}
+                style={{ height: "3rem", width: "100px" }}
+              >
+                Сторінка пасажира
+              </NavDropdown.Item>
+            ) : null}
 
-            <NavDropdown.Item
-              onClick={() => handleLinkClick("/driver/page")}
-              style={{ height: "3rem", width: "100px" }}
-            >
-              Driver
-            </NavDropdown.Item>
+            {userRole === "driver" || userRole === "admin" ? (
+              <NavDropdown.Item
+                onClick={() => handleLinkClick("/driver/page")}
+                style={{ height: "3rem", width: "100px" }}
+              >
+                Сторінка водія
+              </NavDropdown.Item>
+            ) : null}
 
-            <NavDropdown.Item
-              onClick={() => handleLinkClick("/dispatcher/page")}
-              style={{ height: "3rem", width: "100px" }}
-            >
-              Dispatcher
-            </NavDropdown.Item>
+            {userRole === "driver" || userRole === "admin" ? (
+              <NavDropdown.Item
+                onClick={() => handleLinkClick("/driver/trips")}
+                style={{ height: "3rem", width: "100px" }}
+              >
+                Поїдки водія
+              </NavDropdown.Item>
+            ) : null}
 
-            <NavDropdown.Item
-              onClick={() => handleLinkClick("/admin/edituser")}
-              style={{ height: "3rem", width: "100px" }}
-            >
-              Admin
-            </NavDropdown.Item>
+            {userRole === "dispatcher" || userRole === "admin" ? (
+              <NavDropdown.Item
+                onClick={() => handleLinkClick("/dispatcher/page")}
+                style={{ height: "3rem", width: "100px" }}
+              >
+                Сторінка диспечера
+              </NavDropdown.Item>
+            ) : null}
+
+            {userRole === "admin" && (
+              <NavDropdown.Item
+                onClick={() => handleLinkClick("/admin/edituser")}
+                style={{ height: "3rem", width: "100px" }}
+              >
+                Сторінка адміністратора
+              </NavDropdown.Item>
+            )}
 
             <NavDropdown.Divider style={{ width: "100px" }} />
 
@@ -83,7 +103,7 @@ const Navigation = () => {
               onClick={logoutUser}
               style={{ height: "3rem", width: "100px" }}
             >
-              Logout
+              Вийти
             </NavDropdown.Item>
           </Nav>
         </Navbar.Collapse>

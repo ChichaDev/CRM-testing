@@ -48,18 +48,18 @@ const UserList = () => {
           <ListGroupItem key={user.id}>
             <div>DisplayName: {user.displayName}</div>
             <div>Email: {user.email}</div>
-            <div>Role: {user.role || "without Role"}</div>
+            <div>Role: {user.role || "пасажир"}</div>
             {user.role && (
               <Button
                 variant="danger"
                 onClick={() => handleRemoveRole(user.id)}
               >
-                Remove Role
+                Видалити роль
               </Button>
             )}
             {!user.role && (
               <Button variant="success" onClick={() => handleOpenModal(user)}>
-                Add Role
+                Додати роль
               </Button>
             )}
           </ListGroupItem>
@@ -67,7 +67,7 @@ const UserList = () => {
       </ListGroup>
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header>
-          <Modal.Title>Add Role</Modal.Title>
+          <Modal.Title>Додавання ролі</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Control
@@ -75,15 +75,15 @@ const UserList = () => {
             value={selectedRole}
             onChange={(e) => setSelectedRole(e.target.value)}
           >
-            <option value="">Select Role</option>
-            <option value="passenger">Passenger</option>
-            <option value="driver">Driver</option>
-            <option value="dispatcher">Dispatcher</option>
+            <option value="">Обрати роль</option>
+            <option value="passenger">Пасажир</option>
+            <option value="driver">Водій</option>
+            <option value="dispatcher">Диспечер</option>
           </Form.Control>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
-            Close
+            Закрити
           </Button>
           <Button
             variant="primary"
@@ -95,7 +95,7 @@ const UserList = () => {
               )
             }
           >
-            Add Role
+            Додати роль
           </Button>
         </Modal.Footer>
       </Modal>

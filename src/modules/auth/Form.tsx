@@ -9,6 +9,8 @@ import { useGoogleSignIn } from "./useGoogleSignIn";
 import { useFacebookSignIn } from "./useFacebookSignIn";
 
 import PhoneSVG from "../../assets/mobile.svg";
+import { useAppSelector } from "../../store/redux-hook";
+import { getUserRole } from "../../store/user/selector";
 
 type FormProps = {
   title: string;

@@ -1,5 +1,5 @@
-import { useAppSelector } from "../../store/redux-hook";
-import { getUserInfo } from "../../store/user/selector";
+import { useAppSelector } from "../store/redux-hook";
+import { getUserInfo } from "../store/user/selector";
 
 import { Button, Card, Col, Row } from "react-bootstrap";
 
@@ -17,14 +17,14 @@ export const ProfileCard = () => {
           <Card.Img variant="top" src={avatar} />
         </div>
         <Card.Body>
-          <Card.Title>Welcome, {displayName || "User"}!</Card.Title>
-          <Card.Text>Your email is {email || "not found"}.</Card.Text>
+          <Card.Title>Вітаю, {displayName || "User"}!</Card.Title>
+          <Card.Text>Ваша email адреса {email || "--"}.</Card.Text>
           <Card.Text>
-            <h5>Your phoneNumber is {phoneNumber || "not found"}</h5>
+            <h5>Ваш номер телефону {phoneNumber || "--"}</h5>
           </Card.Text>
           <Row>
             <Col>
-              <Button variant="primary">Edit Profile</Button>
+              <Button variant="primary">Редагувати профіль</Button>
             </Col>
           </Row>
         </Card.Body>

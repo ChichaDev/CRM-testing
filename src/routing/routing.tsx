@@ -10,6 +10,7 @@ import { Root } from "./Root";
 import { Profile } from "../pages/Profile";
 import { PrivateRoute } from "./hoc/ProtectedRoute";
 import { PhoneAuthPage } from "../modules/auth/PhoneAuthPage";
+import { DriverTrips } from "../modules/driver/DriverTrips";
 
 export const defaultRouter = createBrowserRouter([
   {
@@ -58,6 +59,16 @@ export const defaultRouter = createBrowserRouter([
                 allowedRoles={["driver"]}
                 path="/"
                 element={<DriverPage />}
+              />
+            ),
+          },
+          {
+            path: "trips/*",
+            element: (
+              <PrivateRoute
+                allowedRoles={["driver"]}
+                path="/"
+                element={<DriverTrips />}
               />
             ),
           },
