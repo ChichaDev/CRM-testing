@@ -1,3 +1,5 @@
+import { createBrowserRouter } from "react-router-dom";
+
 import LoginPage from "../modules/auth/LoginPage";
 import RegisterPage from "../modules/auth/RegisterPage";
 import { PassengerPage } from "../modules/passenger/PassengerPage";
@@ -5,12 +7,10 @@ import { DriverPage } from "../modules/driver/DriverPage";
 import { DispatcherPage } from "../modules/dispatcher/DispatcherPage";
 import { EditUsersPage } from "../modules/admin/EditUsersPage";
 import { ErrorPage } from "../pages/ErrorPage";
-import { createBrowserRouter } from "react-router-dom";
 import { Root } from "./Root";
 import { Profile } from "../pages/Profile";
 import { PrivateRoute } from "./hoc/ProtectedRoute";
 import { PhoneAuthPage } from "../modules/auth/PhoneAuthPage";
-import { DriverTrips } from "../modules/driver/DriverTrips";
 
 export const defaultRouter = createBrowserRouter([
   {
@@ -43,7 +43,7 @@ export const defaultRouter = createBrowserRouter([
               <PrivateRoute
                 path="/"
                 element={<PassengerPage />}
-                allowedRoles={["passenger"]}
+                allowedRoles={["passenger", "admin"]}
               />
             ),
           },
@@ -56,19 +56,9 @@ export const defaultRouter = createBrowserRouter([
             path: "page/*",
             element: (
               <PrivateRoute
-                allowedRoles={["driver"]}
+                allowedRoles={["driver", "admin"]}
                 path="/"
                 element={<DriverPage />}
-              />
-            ),
-          },
-          {
-            path: "trips/*",
-            element: (
-              <PrivateRoute
-                allowedRoles={["driver"]}
-                path="/"
-                element={<DriverTrips />}
               />
             ),
           },
@@ -81,7 +71,7 @@ export const defaultRouter = createBrowserRouter([
             path: "page/*",
             element: (
               <PrivateRoute
-                allowedRoles={["dispatcher"]}
+                allowedRoles={["dispatcher", "admin"]}
                 path="/"
                 element={<DispatcherPage />}
               />

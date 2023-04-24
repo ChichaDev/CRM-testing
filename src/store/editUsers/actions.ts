@@ -9,7 +9,6 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../../../firebase";
-// import { User } from "firebase/auth";
 import { Driver } from "../../types";
 import { User } from "../../types/user";
 
@@ -36,9 +35,11 @@ export const addRole = createAsyncThunk(
     displayName: string;
   }) => {
     const userDocRef = doc(db, "users", userId);
+
     await updateDoc(userDocRef, { role: role });
-    const driverRef = collection(db, "drivers");
+
     if (role === "driver") {
+      const driverRef = collection(db, "drivers");
       const driverData: DriverType = {
         driver: displayName,
       };
@@ -53,7 +54,7 @@ export const removeRole = createAsyncThunk(
     try {
       const userDocRef = doc(db, "users", userId);
       await updateDoc(userDocRef, { role: null });
-      console.log("THUNK WORK");
+
       const driverQuerySnapshot = await getDocs(collection(db, "drivers"));
       const promises = driverQuerySnapshot.docs.map(async (docRef) => {
         const driverData = docRef.data();

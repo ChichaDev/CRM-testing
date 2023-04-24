@@ -1,6 +1,8 @@
-import moment from "moment";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
+
 import { Form, Row, Col, Button } from "react-bootstrap";
+
+import moment from "moment";
 
 type SearchProps = {
   onSearch: (searchParams: SearchParams) => void;
@@ -76,7 +78,15 @@ export const Search: React.FC<SearchProps> = ({ onSearch, onClear }) => {
               />
             </Form.Group>
           </Col>
-          <Col>
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              alignContent: "center",
+              marginTop: "30px",
+            }}
+          >
             <Button variant="primary" type="submit">
               Пошук
             </Button>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button, Nav, NavDropdown, Navbar } from "react-bootstrap";
 
 import { To, useNavigate } from "react-router-dom";
+
 import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
 import { removeUser } from "../../store/user/slice";
 import { getUserRole } from "../../store/user/selector";
@@ -14,6 +15,8 @@ const Navigation = () => {
 
   const dispatch = useAppDispatch();
 
+  const navigate = useNavigate();
+
   const userRole = useAppSelector(getUserRole);
 
   const logoutUser = () => {
@@ -22,8 +25,6 @@ const Navigation = () => {
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("accessToken");
   };
-
-  const navigate = useNavigate();
 
   const handleLinkClick = (path: To) => {
     setExpanded(false);
@@ -62,15 +63,6 @@ const Navigation = () => {
                 className="menu-item"
               >
                 Сторінка водія
-              </NavDropdown.Item>
-            ) : null}
-
-            {userRole === "driver" || userRole === "admin" ? (
-              <NavDropdown.Item
-                onClick={() => handleLinkClick("/driver/trips")}
-                className="menu-item"
-              >
-                Поїдки водія
               </NavDropdown.Item>
             ) : null}
 

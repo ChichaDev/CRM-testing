@@ -12,7 +12,6 @@ const initialState: User = {
   role: "",
   isLoggedIn: getFromLocalStorage("accessToken", false),
 };
-console.log("initialstate", initialState);
 
 const userSlice = createSlice({
   name: "@user",
@@ -32,19 +31,14 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchUser.fulfilled, (state, action) => {
-        state.email = action.payload.email || "";
-        state.phoneNumber = action.payload.phoneNumber || "";
-        state.id = action.payload.id;
-        state.displayName = action.payload.displayName || "";
-        state.avatar = action.payload.avatar || "";
-        state.role = action.payload.role || "";
-      })
-
-      .addCase(fetchUser.rejected, (state, action) => {
-        // state.error = action.error.message || "Something went wrong";
-      });
+    builder.addCase(fetchUser.fulfilled, (state, action) => {
+      state.email = action.payload.email || "";
+      state.phoneNumber = action.payload.phoneNumber || "";
+      state.id = action.payload.id;
+      state.displayName = action.payload.displayName || "";
+      state.avatar = action.payload.avatar || "";
+      state.role = action.payload.role || "";
+    });
   },
 });
 

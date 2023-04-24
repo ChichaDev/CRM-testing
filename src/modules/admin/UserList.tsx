@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 
 import { ListGroup, ListGroupItem, Button, Form, Modal } from "react-bootstrap";
 
-import { User } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
 import { addRole, fetchUsers, removeRole } from "../../store/editUsers/actions";
 import { getUsers } from "../../store/editUsers/selector";
+
+import { User } from "../../types";
 
 const UserList = () => {
   const [selectedRole, setSelectedRole] = useState<string>("");
@@ -27,9 +28,7 @@ const UserList = () => {
   };
 
   const handleRemoveRole = (userId: string) => {
-    dispatch(removeRole(userId))
-      .then(() => console.log("HANDLER WORK"))
-      .catch((error) => console.error(error));
+    dispatch(removeRole(userId));
   };
 
   const handleOpenModal = (user: User) => {
@@ -48,7 +47,7 @@ const UserList = () => {
           <ListGroupItem key={user.id}>
             <div>DisplayName: {user.displayName}</div>
             <div>Email: {user.email}</div>
-            <div>Role: {user.role || "пасажир"}</div>
+            <div>Role: {user.role || "---"}</div>
             {user.role && (
               <Button
                 variant="danger"

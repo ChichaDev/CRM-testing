@@ -1,5 +1,7 @@
 import { useState } from "react";
+
 import { Form as Forms, Button, Card, Container } from "react-bootstrap";
+
 import { Link, useNavigate } from "react-router-dom";
 
 import { FacebookLoginButton } from "react-social-login-buttons";
@@ -9,8 +11,6 @@ import { useGoogleSignIn } from "./useGoogleSignIn";
 import { useFacebookSignIn } from "./useFacebookSignIn";
 
 import PhoneSVG from "../../assets/mobile.svg";
-import { useAppSelector } from "../../store/redux-hook";
-import { getUserRole } from "../../store/user/selector";
 
 type FormProps = {
   title: string;
@@ -57,7 +57,7 @@ export const Form = ({ title, handleClick }: FormProps) => {
             <h2 className="text-center mb-4">{title}</h2>
             <Forms onSubmit={handleSubmit}>
               <Forms.Group id="email">
-                <Forms.Label>Email</Forms.Label>
+                <Forms.Label>Електронна пошта</Forms.Label>
                 <Forms.Control
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -67,7 +67,7 @@ export const Form = ({ title, handleClick }: FormProps) => {
               </Forms.Group>
 
               <Forms.Group id="password">
-                <Forms.Label>Password</Forms.Label>
+                <Forms.Label>Пароль</Forms.Label>
                 <Forms.Control
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -77,12 +77,13 @@ export const Form = ({ title, handleClick }: FormProps) => {
               </Forms.Group>
 
               <Button disabled={loading} className="w-100 mt-4" type="submit">
-                {loading ? "Loading..." : title}
+                {loading ? "Завантаження..." : title}
               </Button>
             </Forms>
           </Card.Body>
           <div className="d-flex align-items-center justify-content-center">
             <GoogleLoginButton
+              text="Увійти з Google"
               style={{ maxWidth: "240px" }}
               onClick={handleClickGoogle}
             />
@@ -90,6 +91,7 @@ export const Form = ({ title, handleClick }: FormProps) => {
 
           <div className="d-flex align-items-center justify-content-center">
             <FacebookLoginButton
+              text="Увійти з Facebook"
               style={{ maxWidth: "240px" }}
               onClick={handleClickFacebook}
             />
@@ -111,18 +113,19 @@ export const Form = ({ title, handleClick }: FormProps) => {
                   alt="phone login"
                   style={{ width: "30px", height: "30px" }}
                 />
-                Log In with mobile
+                Увійти з мобільного
               </Button>
             </Link>
           </div>
 
-          {title === "Sign In" ? (
+          {title === "Увійти" ? (
             <div className="w-100 text-center mt-2">
-              Need an account? <Link to="/auth/signup">Sign Up</Link>
+              Потрібен обліковий запис?{" "}
+              <Link to="/auth/signup">Зареєструватися</Link>
             </div>
           ) : (
             <div className="w-100 text-center mt-2">
-              Already have an account? <Link to="/auth/login">Sign in</Link>
+              Вже є аккаунт? <Link to="/auth/login">Увійти</Link>
             </div>
           )}
         </Card>

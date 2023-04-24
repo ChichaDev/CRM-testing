@@ -1,8 +1,9 @@
+import { useAppDispatch } from "../../store/redux-hook";
+import { setUser } from "../../store/user/slice";
+
 import { FacebookAuthProvider, signInWithPopup } from "firebase/auth";
 import { authentication, db } from "../../../firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { useAppDispatch } from "../../store/redux-hook";
-import { setUser } from "../../store/user/slice";
 
 export const useFacebookSignIn = () => {
   const dispatch = useAppDispatch();
@@ -12,8 +13,6 @@ export const useFacebookSignIn = () => {
 
     signInWithPopup(authentication, provider)
       .then(async (credential) => {
-        console.log(credential.user.uid + "зарегистрирован");
-
         const tokenUser = credential.user.getIdToken();
 
         localStorage.setItem("accessToken", JSON.stringify(tokenUser));
@@ -28,10 +27,11 @@ export const useFacebookSignIn = () => {
         if (userDoc.exists()) {
           console.log("Пользователь уже существует в базе данных.");
         } else {
-          console.log("Новый пользователь. Создаем запись в базе данных.");
           await setDoc(userRef, {
             email: credential.user.email,
-            displayName: credential.user.displayName || "user",
+            displayName:
+              credential.user.displayName ||
+              "User " + Math.floor(Math.random() * 1000),
             uid: credential.user.uid,
             role: "passenger",
           });
@@ -50,14 +50,3 @@ export const useFacebookSignIn = () => {
   };
   return registerWithFacebook;
 };
-
-// const credential = FacebookAuthProvider.credentialFromResult(result);
-// const accessToken = credential?.accessToken;
-
-// fetch(
-//   `https://graph.facebook.com/${result.user.providerData[0].uid}/picture?type=large&access_token=${accessToken}`
-// )
-//   .then((response) => response.blob())
-//   .then((blob) => {
-//     console.log("create profile photo FB", URL.createObjectURL(blob));
-//   });

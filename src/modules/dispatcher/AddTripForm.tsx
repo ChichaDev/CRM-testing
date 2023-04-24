@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Button, Col, Form, Modal } from "react-bootstrap";
+
+import { Button, Form, Modal } from "react-bootstrap";
+
+import { fetchTripsAsync } from "../../store/trips/slice";
+import { useAppDispatch } from "../../store/redux-hook";
 
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../../firebase";
-import { fetchTripsAsync } from "../../store/trips/slice";
-import { useAppDispatch } from "../../store/redux-hook";
 
 import moment from "moment";
 
@@ -69,7 +71,7 @@ const AddTripForm: React.FC<Props> = ({ show, handleAddTripClose }) => {
     setTo("");
     setPassengers(0);
     setTicketPrice(0);
-    console.log("Trip added to DB");
+
     dispatch(fetchTripsAsync());
     handleAddTripClose();
   };
@@ -148,7 +150,7 @@ const AddTripForm: React.FC<Props> = ({ show, handleAddTripClose }) => {
             <Form.Label>Дата та час</Form.Label>
             <Form.Control
               type="datetime-local"
-              value={moment(date).format("YYYY-MM-DD")}
+              value={moment(date).format("YYYY-MM-DDTHH:mm")}
               onChange={(event) => setDate(moment(event.target.value).toDate())}
               required
             />

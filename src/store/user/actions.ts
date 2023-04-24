@@ -8,7 +8,6 @@ export const fetchUser = createAsyncThunk<User, void, { rejectValue: Error }>(
   async (_, { rejectWithValue }) => {
     try {
       const user = authentication.currentUser;
-      console.log("user from thunk", user);
 
       if (!user) {
         return rejectWithValue(new Error("User is not authenticated"));
@@ -22,7 +21,6 @@ export const fetchUser = createAsyncThunk<User, void, { rejectValue: Error }>(
       }
 
       const userData = userSnapshot.data();
-      console.log("user update", userData);
 
       return {
         id: user.uid,

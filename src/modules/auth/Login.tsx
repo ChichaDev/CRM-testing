@@ -1,8 +1,10 @@
 import { Form } from "./Form";
-import { signInWithEmailAndPassword } from "firebase/auth";
+
 import { useAppDispatch } from "../../store/redux-hook";
 import { setUser } from "../../store/user/slice";
+
 import { authentication } from "../../../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -16,8 +18,6 @@ const Login = () => {
       );
 
       const user = userCredential.user;
-
-      console.log(`Пользователь ${user.uid} успешно вошел`);
 
       const tokenUser = await user.getIdToken();
 
@@ -34,7 +34,7 @@ const Login = () => {
     }
   };
 
-  return <Form title="Sign In" handleClick={handleLogin} />;
+  return <Form title="Увійти" handleClick={handleLogin} />;
 };
 
 export { Login };

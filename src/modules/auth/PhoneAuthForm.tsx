@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { authentication, db } from "../../../firebase";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+
+import { NavLink, useNavigate } from "react-router-dom";
+
 import { useAppDispatch } from "../../store/redux-hook";
 import { setUser } from "../../store/user/slice";
+
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { authentication, db } from "../../../firebase";
 
 export const PhoneAuthForm = () => {
   const countryCode = "+38";
@@ -55,7 +58,6 @@ export const PhoneAuthForm = () => {
         .confirm(otp)
         .then(async (result: any) => {
           const user = result.user;
-          console.log(user);
 
           const tokenUser = user.getIdToken();
 
@@ -71,10 +73,10 @@ export const PhoneAuthForm = () => {
           if (userDoc.exists()) {
             console.log("Пользователь уже существует в базе данных.");
           } else {
-            console.log("Новый пользователь. Создаем запись в базе данных.");
             await setDoc(userRef, {
               email: user.phoneNumber,
-              displayName: user.displayName || "user",
+              displayName:
+                user.displayName || "User " + Math.floor(Math.random() * 1000),
               uid: user.uid,
               role: "passenger",
             });
@@ -97,10 +99,12 @@ export const PhoneAuthForm = () => {
   return (
     <div className="formContainer" style={{ width: "500px" }}>
       <form onSubmit={requestOTP}>
-        <h1>Sign in with phone number</h1>
+        <h1 style={{ textAlign: "center" }}>
+          Увійдіть за допомогою номера телефону
+        </h1>
         <div className="mb-3">
           <label htmlFor="phoneNumberInput" className="form-label">
-            Phone Number
+            Номер телефону
           </label>
           <input
             type="tel"
@@ -111,7 +115,7 @@ export const PhoneAuthForm = () => {
             onChange={(e) => setPhoneNumber(e.target.value)}
           />
           <div id="phoneNumberHelp" className="form-text">
-            Please enter your number
+            Будь ласка, введіть свій номер
           </div>
         </div>
         {expandForm === true ? (
@@ -128,9 +132,9 @@ export const PhoneAuthForm = () => {
                 onChange={verifyOTP}
               />
               <div id="otpHelp" className="form-text">
-                Please enter the one time pin sent to your phone number
+                Введіть одноразовий PIN-код, надісланий на ваш номер телефону
               </div>
-              <NavLink to={"/auth/login"}>back to login</NavLink>
+              <NavLink to={"/auth/login"}>повернутися до входу</NavLink>
             </div>
           </>
         ) : null}
@@ -144,9 +148,9 @@ export const PhoneAuthForm = () => {
             }}
           >
             <button type="submit" className="btn btn-primary">
-              Request OTP
+              Запит OTP
             </button>
-            <NavLink to={"/auth/login"}>back to login</NavLink>
+            <NavLink to={"/auth/login"}>повернутися до входу</NavLink>
           </div>
         ) : null}
         <div id="recaptcha-container"></div>

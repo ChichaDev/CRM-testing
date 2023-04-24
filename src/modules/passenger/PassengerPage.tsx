@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
 
-import { fetchTripsAsync } from "../../store/trips/slice";
 import { Container } from "react-bootstrap";
+
 import { PassengerTable } from "./PassengerTable";
 import { Search } from "../../components/Search";
-import { getTrips } from "../../store/trips/selector";
-import moment from "moment";
-import { Trips } from "../../types";
 import { SortByDate } from "../../components/SortByDate";
+
+import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
+import { fetchTripsAsync } from "../../store/trips/slice";
+import { getTrips } from "../../store/trips/selector";
+
+import moment from "moment";
+
+import { Trips } from "../../types";
 
 type SearchParams = {
   from: string;

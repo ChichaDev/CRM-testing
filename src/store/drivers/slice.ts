@@ -2,11 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { fetchDrivers } from "./action";
 import { Driver } from "../../types";
 
-// export type Driver = {
-//   id: string;
-//   driver?: string;
-// };
-
 type DriverSlice = {
   driversList: Driver[];
   status: "idle" | "loading" | "succeeded" | "failed";

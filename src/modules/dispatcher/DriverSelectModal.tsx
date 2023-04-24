@@ -1,10 +1,13 @@
 import { useState } from "react";
+
 import { Modal, Button, Form } from "react-bootstrap";
+
 import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
+import { getDrivers } from "../../store/drivers/selector";
+import { fetchTripsAsync } from "../../store/trips/slice";
+
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
-import { fetchTripsAsync } from "../../store/trips/slice";
-import { getDrivers } from "../../store/drivers/selector";
 
 type Props = {
   show: boolean;
@@ -19,7 +22,11 @@ const DriverSelectModal: React.FC<Props> = ({ show, handleClose, tripId }) => {
 
   const drivers = useAppSelector(getDrivers);
 
-  const handleDriverSelect = async (driverId: string, tripId: string) => {
+  const handleDriverSelect = async (
+    driverId: string,
+    tripId: string,
+    handleClose: () => void
+  ) => {
     const tripRef = doc(db, "trips", tripId);
     const driverRef = doc(db, "drivers", driverId);
 
@@ -30,14 +37,13 @@ const DriverSelectModal: React.FC<Props> = ({ show, handleClose, tripId }) => {
       await updateDoc(tripRef, {
         driver: driverName,
       });
-
-      console.log("Driver added to trip successfully");
     } catch (error) {
       console.error("Error adding driver to trip: ", error);
     }
 
     setSelectedDriverId("");
     dispatch(fetchTripsAsync());
+    handleClose();
   };
 
   return (
@@ -66,7 +72,9 @@ const DriverSelectModal: React.FC<Props> = ({ show, handleClose, tripId }) => {
         </Button>
 
         <Button
-          onClick={() => handleDriverSelect(selectedDriverId, tripId)}
+          onClick={() =>
+            handleDriverSelect(selectedDriverId, tripId, handleClose)
+          }
           variant="primary"
         >
           Обрати

@@ -3,11 +3,15 @@ import Button from "react-bootstrap/Button";
 
 import { fetchTripsAsync } from "../../store/trips/slice";
 import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
+import { getStatusTrips, getTrips } from "../../store/trips/selector";
 
 import { authentication, db } from "../../../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { getTrips } from "../../store/trips/selector";
+
+import { Loader } from "../../components/Loader";
+
 import moment from "moment";
+
 import { Trips } from "../../types";
 
 type Props = {
@@ -18,6 +22,7 @@ export const PassengerTable: React.FC<Props> = ({ trips }) => {
   const dispatch = useAppDispatch();
 
   const tripsAll = useAppSelector(getTrips);
+  const statusTrips = useAppSelector(getStatusTrips);
 
   const handleBookTrip = async (tripId: string) => {
     const tripRef = doc(db, "trips", tripId);
@@ -79,6 +84,9 @@ export const PassengerTable: React.FC<Props> = ({ trips }) => {
     );
   };
 
+  if (statusTrips === "loading") {
+    return <Loader />;
+  }
   return (
     <>
       <Table bordered hover style={{ width: "100%" }}>

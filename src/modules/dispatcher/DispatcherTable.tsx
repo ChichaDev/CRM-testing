@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
+
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
-import AddTripForm from "./AddTripForm";
-import { fetchTripsAsync } from "../../store/trips/slice";
-import { useAppDispatch } from "../../store/redux-hook";
-import { deleteTrip } from "../../store/trips/actions";
 
+import DriverSelectModal from "./DriverSelectModal";
+import { Loader } from "../../components/Loader";
+import AddTripForm from "./AddTripForm";
+
+import { fetchTripsAsync } from "../../store/trips/slice";
+import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
+import { deleteTrip } from "../../store/trips/actions";
 import { fetchDrivers } from "../../store/drivers/action";
+import { getStatusTrips } from "../../store/trips/selector";
 
 import moment from "moment";
+
 import { Trips } from "../../types";
-import DriverSelectModal from "./DriverSelectModal";
 
 type Props = {
   trips: Trips[];
@@ -21,6 +26,8 @@ export const DispatcherTable: React.FC<Props> = ({ trips }) => {
   const [isAddDriverFormOpen, setIsDriverFormOpen] = useState(false);
 
   const dispatch = useAppDispatch();
+
+  const statusTrips = useAppSelector(getStatusTrips);
 
   const handleDriverSelectOpen = () => {
     setIsDriverFormOpen(true);
@@ -47,6 +54,10 @@ export const DispatcherTable: React.FC<Props> = ({ trips }) => {
   const handleAddTripClose = () => {
     setIsAddTripFormOpen(false);
   };
+
+  if (statusTrips === "loading") {
+    return <Loader />;
+  }
 
   return (
     <>

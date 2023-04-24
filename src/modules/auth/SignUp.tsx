@@ -1,7 +1,10 @@
 import { useNavigate } from "react-router-dom";
+
 import { useAppDispatch } from "../../store/redux-hook";
 import { setUser } from "../../store/user/slice";
+
 import { Form } from "./Form";
+
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { authentication, db } from "../../../firebase";
@@ -16,8 +19,6 @@ const SignUp = () => {
       .then(async (userCredential) => {
         const user = userCredential.user;
 
-        console.log(`Пользователь ${user.uid} успешно зарегистрирован`);
-
         const tokenUser = await user.getIdToken();
 
         localStorage.setItem("accessToken", JSON.stringify(tokenUser));
@@ -27,7 +28,8 @@ const SignUp = () => {
 
         await setDoc(userRef, {
           email: user.email,
-          displayName: user.displayName || "User",
+          displayName:
+            user.displayName || "User " + Math.floor(Math.random() * 1000),
           uid: user.uid,
           role: "passenger",
         });
@@ -46,7 +48,7 @@ const SignUp = () => {
       });
   };
 
-  return <Form title="Sign Up" handleClick={handleRegister} />;
+  return <Form title="Зареєструватися" handleClick={handleRegister} />;
 };
 
 export { SignUp };

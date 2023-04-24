@@ -1,7 +1,7 @@
+import { Card } from "react-bootstrap";
+
 import { useAppSelector } from "../store/redux-hook";
 import { getUserInfo } from "../store/user/selector";
-
-import { Button, Card, Col, Row } from "react-bootstrap";
 
 export const ProfileCard = () => {
   const { email, phoneNumber, displayName, avatar } =
@@ -9,7 +9,7 @@ export const ProfileCard = () => {
 
   return (
     <div className="d-flex justify-content-center">
-      <Card style={{ width: "18rem" }}>
+      <Card style={{ width: "20rem" }}>
         <div
           className="rounded-circle mx-auto"
           style={{ width: "50%", overflow: "hidden" }}
@@ -17,16 +17,15 @@ export const ProfileCard = () => {
           <Card.Img variant="top" src={avatar} />
         </div>
         <Card.Body>
-          <Card.Title>Вітаю, {displayName || "User"}!</Card.Title>
-          <Card.Text>Ваша email адреса {email || "--"}.</Card.Text>
-          <Card.Text>
-            <h5>Ваш номер телефону {phoneNumber || "--"}</h5>
+          <Card.Title className="text-center" as={"h2"}>
+            Вітаю, {displayName || "User"}!
+          </Card.Title>
+          <hr style={{ margin: "1rem 0" }} />
+          <Card.Text as="h5">Ваша email адреса: {email || "---"}.</Card.Text>
+          <hr style={{ margin: "1rem 0" }} />
+          <Card.Text as="h5">
+            Ваш номер телефону: {phoneNumber || "---"}
           </Card.Text>
-          <Row>
-            <Col>
-              <Button variant="primary">Редагувати профіль</Button>
-            </Col>
-          </Row>
         </Card.Body>
       </Card>
     </div>

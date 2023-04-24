@@ -3,12 +3,15 @@ import Button from "react-bootstrap/Button";
 
 import { fetchTripsAsync } from "../../store/trips/slice";
 import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
+import { getStatusTrips, getTrips } from "../../store/trips/selector";
 
 import { authentication, db } from "../../../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { getTrips } from "../../store/trips/selector";
+
 import moment from "moment";
+
 import { Trips } from "../../types";
+import { Loader } from "../../components/Loader";
 
 type Props = {
   trips: Trips[];
@@ -18,6 +21,7 @@ export const DriverTable: React.FC<Props> = ({ trips }) => {
   const dispatch = useAppDispatch();
 
   const tripsAll = useAppSelector(getTrips);
+  const statusTrips = useAppSelector(getStatusTrips);
 
   const handleAcceptDriver = async (
     driverId: string | undefined | null,
@@ -61,8 +65,6 @@ export const DriverTable: React.FC<Props> = ({ trips }) => {
         });
 
         dispatch(fetchTripsAsync());
-
-        console.log("Поле 'driver' удалено из документа с ID:", tripId);
       } else {
         console.warn("Поле 'driver' не найдено в документе с ID:", tripId);
       }
@@ -70,6 +72,10 @@ export const DriverTable: React.FC<Props> = ({ trips }) => {
       console.error("Ошибка при удалении поля 'driver':", error);
     }
   };
+
+  if (statusTrips === "loading") {
+    return <Loader />;
+  }
 
   return (
     <>
