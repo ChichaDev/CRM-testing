@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { Header } from "../components/Header";
+import { Header } from "../components/nav/Header";
 import { useAppSelector } from "../store/redux-hook";
 import { getIsLoggedInStatus } from "../store/user/selector";
 
