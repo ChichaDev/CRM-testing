@@ -25,7 +25,7 @@ export const Search: React.FC<SearchProps> = ({ onSearch, onClear }) => {
     onSearch({ from, to, date: moment(date).toISOString() });
   };
 
-  const handleClear = () => {
+  const handleClearInput = () => {
     setFrom("");
     setTo("");
     setDate(new Date());
@@ -90,7 +90,7 @@ export const Search: React.FC<SearchProps> = ({ onSearch, onClear }) => {
             <Button variant="primary" type="submit">
               Пошук
             </Button>
-            <Button variant="secondary" onClick={handleClear}>
+            <Button variant="secondary" onClick={handleClearInput}>
               Очистити
             </Button>
           </Col>
