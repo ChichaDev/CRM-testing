@@ -48,6 +48,7 @@ export const DriverTable: React.FC<Props> = ({ trips }) => {
   const isTripHasDriver = (tripId: string): boolean => {
     const trip = tripsAll.find((trip) => trip.id === tripId);
     return (
+      currentDriver !== null &&
       currentDriver !== undefined &&
       (trip?.driver?.includes(currentDriver) ?? false)
     );
