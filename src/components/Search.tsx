@@ -9,7 +9,7 @@ type SearchProps = {
   onClear: () => void;
 };
 
-type SearchParams = {
+export type SearchParams = {
   from: string;
   to: string;
   date: string;

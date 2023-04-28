@@ -3,24 +3,15 @@ import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 
 import { PassengerTable } from "./PassengerTable";
-import { Search } from "../../components/Search";
-import { SortByDate } from "../../components/SortByDate";
+import { Search, SearchParams } from "../../components/Search";
+import { SortByDate, SortOrder } from "../../components/SortByDate";
 
 import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
 import { fetchTripsAsync } from "../../store/trips/slice";
-import { getTrips } from "../../store/trips/selector";
-
-import moment from "moment";
+import { getPassengerTrips } from "../../store/trips/selector";
 
 import { Trips } from "../../types";
-
-type SearchParams = {
-  from: string;
-  to: string;
-  date: string;
-};
-
-type SortOrder = "asc" | "desc";
+import { filterTrips } from "../../services/filterTrips";
 
 export const PassengerPage = () => {
   const dispatch = useAppDispatch();
@@ -29,13 +20,9 @@ export const PassengerPage = () => {
     dispatch(fetchTripsAsync());
   }, []);
 
-  const trips = useAppSelector(getTrips);
+  const trips = useAppSelector(getPassengerTrips);
 
-  const passengerTrips = trips.filter(
-    (trip) => trip.driver !== null && trip.driver !== undefined
-  );
-
-  const [filteredTrips, setFilteredTrips] = useState(passengerTrips);
+  const [filteredTrips, setFilteredTrips] = useState(trips);
   const [searchParams, setSearchParams] = useState<SearchParams>({
     from: "",
     to: "",
@@ -45,32 +32,19 @@ export const PassengerPage = () => {
 
   useEffect(() => {
     if (trips !== filteredTrips) {
-      setFilteredTrips(passengerTrips);
+      setFilteredTrips(trips);
     }
   }, [trips]);
 
   const handleSearch = (params: SearchParams) => {
     setSearchParams(params);
-    const filtered = passengerTrips.filter((trip) => {
-      const { from, to, date } = params;
-
-      const isFromMatched =
-        from === "" || trip.from.toLowerCase().includes(from.toLowerCase());
-      const isToMatched =
-        to === "" || trip.to.toLowerCase().includes(to.toLowerCase());
-
-      const isDateMatched =
-        date === null || moment(trip.date).isSame(moment(date), "day");
-
-      return isFromMatched && isToMatched && isDateMatched;
-    });
-
+    const filtered = filterTrips(trips, params);
     setFilteredTrips(filtered);
   };
 
   const handleClear = () => {
     setSearchParams({ from: "", to: "", date: "" });
-    setFilteredTrips(passengerTrips);
+    setFilteredTrips(trips);
     setSortOrder("asc");
   };
 

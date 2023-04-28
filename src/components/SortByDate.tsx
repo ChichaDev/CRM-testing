@@ -6,7 +6,7 @@ import { Trips } from "../types";
 
 import moment from "moment";
 
-type SortOrder = "asc" | "desc";
+export type SortOrder = "asc" | "desc";
 
 type SortProps = {
   trips: Trips[];
