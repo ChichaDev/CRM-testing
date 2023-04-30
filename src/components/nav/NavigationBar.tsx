@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Button, Nav, NavDropdown, Navbar } from "react-bootstrap";
+import { Button, Nav, NavDropdown, Offcanvas } from "react-bootstrap";
 
 import { To, useNavigate } from "react-router-dom";
 
@@ -8,10 +8,11 @@ import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
 import { removeUser } from "../../store/user/slice";
 import { getUserRole } from "../../store/user/selector";
 
+import Burger from "../../assets/burger.svg";
 import "./NavigationBar.css";
 
 const Navigation = () => {
-  const [expanded, setExpanded] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -27,20 +28,31 @@ const Navigation = () => {
   };
 
   const handleLinkClick = (path: To) => {
-    setExpanded(false);
     navigate(path);
+    setShowMenu(false);
   };
+
+  const handleClose = () => setShowMenu(false);
+
+  const handleShow = () => setShowMenu(true);
+
   return (
     <>
-      <Navbar expand="xxl" expanded={expanded} className="menu">
-        <Navbar.Toggle
-          aria-controls="basic-navbar-nav"
-          onClick={() => setExpanded(!expanded)}
+      <Button variant="outline-light" onClick={handleShow}>
+        <img
+          src={Burger}
+          alt="burger icon"
+          className="navbar-toggler-icon"
+          style={{ width: "30px", height: "30px" }}
         />
-        <Navbar.Collapse id="basic-navbar-nav" className="menu-content">
-          <div className="menu-overlay" onClick={() => setExpanded(false)} />
+      </Button>
 
-          <Nav className="mr-auto">
+      <Offcanvas show={showMenu} onHide={handleClose} className="menu">
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Меню</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <Nav>
             <NavDropdown.Item
               onClick={() => handleLinkClick("/profile/dashboard")}
               className="menu-item"
@@ -84,23 +96,12 @@ const Navigation = () => {
               </NavDropdown.Item>
             )}
 
-            <NavDropdown.Divider />
-
             <NavDropdown.Item onClick={logoutUser} className="menu-item">
               Вийти
             </NavDropdown.Item>
           </Nav>
-          {expanded && (
-            <Button
-              className="menu-btn"
-              variant="danger"
-              onClick={() => setExpanded(false)}
-            >
-              Закрити
-            </Button>
-          )}
-        </Navbar.Collapse>
-      </Navbar>
+        </Offcanvas.Body>
+      </Offcanvas>
     </>
   );
 };

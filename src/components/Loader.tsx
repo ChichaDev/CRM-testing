@@ -4,7 +4,7 @@ export const Loader = () => {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <Spinner animation="border" role="status">
-        <span className="sr-only">Завантаження...</span>
+        <span className="visually-hidden">Завантаження...</span>
       </Spinner>
     </div>
   );
