@@ -8,8 +8,18 @@ import { useAppDispatch, useAppSelector } from "../../store/redux-hook";
 import { removeUser } from "../../store/user/slice";
 import { getUserRole } from "../../store/user/selector";
 
+import { CgProfile } from "react-icons/cg";
+import { GiPerson } from "react-icons/gi";
+import { MdDirectionsCar } from "react-icons/md";
+import { FaUsersCog } from "react-icons/fa";
+import { FaUserShield } from "react-icons/fa";
+import { FiLogOut } from "react-icons/fi";
+import { BsChevronRight } from "react-icons/bs";
+
 import Burger from "../../assets/burger.svg";
 import "./NavigationBar.css";
+
+import useAuth from "../../hooks/useAuth";
 
 const Navigation = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -20,11 +30,12 @@ const Navigation = () => {
 
   const userRole = useAppSelector(getUserRole);
 
+  const { logout } = useAuth();
+
   const logoutUser = () => {
     dispatch(removeUser());
 
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("accessToken");
+    logout();
   };
 
   const handleLinkClick = (path: To) => {
@@ -49,7 +60,7 @@ const Navigation = () => {
 
       <Offcanvas show={showMenu} onHide={handleClose} className="menu">
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Меню</Offcanvas.Title>
+          <Offcanvas.Title style={{ marginLeft: "10px" }}>Меню</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Nav>
@@ -57,7 +68,13 @@ const Navigation = () => {
               onClick={() => handleLinkClick("/profile/dashboard")}
               className="menu-item"
             >
-              Профіль
+              <div>
+                <CgProfile
+                  style={{ marginRight: "10px", marginLeft: "10px" }}
+                />
+                Профіль
+              </div>
+              <BsChevronRight size={16} />
             </NavDropdown.Item>
 
             {userRole === "passenger" || userRole === "admin" ? (
@@ -65,7 +82,13 @@ const Navigation = () => {
                 onClick={() => handleLinkClick("/passenger/page")}
                 className="menu-item"
               >
-                Сторінка пасажира
+                <div>
+                  <GiPerson
+                    style={{ marginRight: "10px", marginLeft: "10px" }}
+                  />
+                  Сторінка пасажира
+                </div>
+                <BsChevronRight size={16} />
               </NavDropdown.Item>
             ) : null}
 
@@ -74,7 +97,13 @@ const Navigation = () => {
                 onClick={() => handleLinkClick("/driver/page")}
                 className="menu-item"
               >
-                Сторінка водія
+                <div>
+                  <MdDirectionsCar
+                    style={{ marginRight: "10px", marginLeft: "10px" }}
+                  />{" "}
+                  Сторінка водія
+                </div>
+                <BsChevronRight size={16} />
               </NavDropdown.Item>
             ) : null}
 
@@ -83,7 +112,13 @@ const Navigation = () => {
                 onClick={() => handleLinkClick("/dispatcher/page")}
                 className="menu-item"
               >
-                Сторінка диспечера
+                <div>
+                  <FaUsersCog
+                    style={{ marginRight: "10px", marginLeft: "10px" }}
+                  />
+                  Сторінка диспечера
+                </div>
+                <BsChevronRight size={16} />
               </NavDropdown.Item>
             ) : null}
 
@@ -92,12 +127,22 @@ const Navigation = () => {
                 onClick={() => handleLinkClick("/admin/edituser")}
                 className="menu-item"
               >
-                Сторінка адміністратора
+                <div>
+                  <FaUserShield
+                    style={{ marginRight: "10px", marginLeft: "10px" }}
+                  />
+                  Сторінка адміністратора
+                </div>
+
+                <BsChevronRight size={16} />
               </NavDropdown.Item>
             )}
 
             <NavDropdown.Item onClick={logoutUser} className="menu-item">
-              Вийти
+              <div>
+                <FiLogOut style={{ marginRight: "10px", marginLeft: "10px" }} />
+                Вийти
+              </div>
             </NavDropdown.Item>
           </Nav>
         </Offcanvas.Body>

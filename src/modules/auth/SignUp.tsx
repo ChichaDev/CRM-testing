@@ -9,10 +9,14 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { authentication, db } from "../../../firebase";
 
+import useAuth from "../../hooks/useAuth";
+
 const SignUp = () => {
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
+
+  const { login } = useAuth();
 
   const handleRegister = async (email: string, password: string) => {
     await createUserWithEmailAndPassword(authentication, email, password)
@@ -21,8 +25,7 @@ const SignUp = () => {
 
         const tokenUser = await user.getIdToken();
 
-        localStorage.setItem("accessToken", JSON.stringify(tokenUser));
-        localStorage.setItem("refreshToken", JSON.stringify(user.refreshToken));
+        login(JSON.stringify(tokenUser), JSON.stringify(user.refreshToken));
 
         const userRef = doc(db, "users", user.uid);
 

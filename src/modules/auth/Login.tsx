@@ -5,9 +5,12 @@ import { setUser } from "../../store/user/slice";
 
 import { authentication } from "../../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
   const dispatch = useAppDispatch();
+
+  const { login } = useAuth();
 
   const handleLogin = async (email: string, password: string) => {
     try {
@@ -21,8 +24,7 @@ const Login = () => {
 
       const tokenUser = await user.getIdToken();
 
-      localStorage.setItem("accessToken", JSON.stringify(tokenUser));
-      localStorage.setItem("refreshToken", JSON.stringify(user.refreshToken));
+      login(JSON.stringify(tokenUser), JSON.stringify(user.refreshToken));
 
       dispatch(
         setUser({

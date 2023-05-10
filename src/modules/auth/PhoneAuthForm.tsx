@@ -9,6 +9,8 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { authentication, db } from "../../../firebase";
 
+import useAuth from "../../hooks/useAuth";
+
 export const PhoneAuthForm = () => {
   const countryCode = "+38";
 
@@ -19,6 +21,8 @@ export const PhoneAuthForm = () => {
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
+
+  const { login } = useAuth();
 
   const generateRecaptcha = () => {
     (window as any).recaptchaVerifier = new RecaptchaVerifier(
@@ -35,7 +39,9 @@ export const PhoneAuthForm = () => {
     e.preventDefault();
     if (phoneNumber.length >= 12) {
       setExpandForm(true);
+
       generateRecaptcha();
+
       let appVerifier = (window as any).recaptchaVerifier;
       signInWithPhoneNumber(authentication, phoneNumber, appVerifier)
         .then((confirmationResult) => {
@@ -52,8 +58,8 @@ export const PhoneAuthForm = () => {
     setOTP(otp);
 
     if (otp.length === 6) {
-      console.log(otp);
       let confirmationResult = (window as any).confirmationResult;
+
       confirmationResult
         .confirm(otp)
         .then(async (result: any) => {
@@ -61,11 +67,7 @@ export const PhoneAuthForm = () => {
 
           const tokenUser = user.getIdToken();
 
-          localStorage.setItem("accessToken", JSON.stringify(tokenUser));
-          localStorage.setItem(
-            "refreshToken",
-            JSON.stringify(user.refreshToken)
-          );
+          login(JSON.stringify(tokenUser), JSON.stringify(user.refreshToken));
 
           const userRef = doc(db, "users", user.uid);
           const userDoc = await getDoc(userRef);
